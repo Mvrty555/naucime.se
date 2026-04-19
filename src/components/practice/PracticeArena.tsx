@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
 
@@ -23,6 +23,16 @@ export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
   const [spravneCelkem, setSpravneCelkem] = useState(0);
   const [serie, setSerie] = useState(0);
   const [nejSerie, setNejSerie] = useState(0);
+
+  /** `useState` inicializuje jen při mountu — při změně poolu (předmět/stupeň) synchronizovat. */
+  useEffect(() => {
+    setOtazka(pickRandomQuestion(pool));
+    setVybrano(null);
+    setHotovo(0);
+    setSpravneCelkem(0);
+    setSerie(0);
+    setNejSerie(0);
+  }, [pool]);
 
   const dalsi = useCallback(() => {
     setOtazka(pickRandomQuestion(pool));
