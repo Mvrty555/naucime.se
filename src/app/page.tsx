@@ -112,6 +112,7 @@ export default function Home() {
           <ul className="mt-8 grid gap-4 sm:grid-cols-2">
             {[
               "Výuka po ročnících (ZŠ 5–9, SŠ 1–4)",
+              "Teoretické minimum — veličiny, jednotky, vzorce a „proč“",
               "Generované příklady bez konce",
               "Textové lekce s drobnými úlohami",
               "Mapa témat podle školy",

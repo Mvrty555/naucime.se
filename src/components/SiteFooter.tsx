@@ -33,6 +33,15 @@ export function SiteFooter() {
             <Link href="/chemie" className="hover:text-cyan-300 hover:underline">
               Chemie
             </Link>
+            <Link href="/matematika/teorie" className="hover:text-cyan-300 hover:underline">
+              Teorie — matematika
+            </Link>
+            <Link href="/fyzika/teorie" className="hover:text-cyan-300 hover:underline">
+              Teorie — fyzika
+            </Link>
+            <Link href="/chemie/teorie" className="hover:text-cyan-300 hover:underline">
+              Teorie — chemie
+            </Link>
           </div>
         </div>
       </div>

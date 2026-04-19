@@ -29,6 +29,12 @@ export default function FyzikaPage() {
       </p>
       <div className="mt-6 flex flex-wrap gap-4 text-sm">
         <Link
+          href="/fyzika/teorie"
+          className="font-semibold text-cyan-400 hover:text-cyan-300 hover:underline"
+        >
+          Teoretické minimum (veličiny, vzorce, proč) →
+        </Link>
+        <Link
           href="/procvicovani"
           className="font-semibold text-fuchsia-400 hover:text-fuchsia-300 hover:underline"
         >
@@ -48,10 +54,10 @@ export default function FyzikaPage() {
         </Link>
       </div>
       <div className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
-        <h2 className="text-lg font-semibold text-white">Obsah připravujeme</h2>
+        <h2 className="text-lg font-semibold text-white">Další obsah</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Kapitoly podle školních témat, ilustrace a úlohy s kontrolou řešení
-          doplníme v dalších iteracích webu.
+          Rozšiřujeme výuku po ročnících, ilustrace a další kapitoly teorie. Začni u
+          odkazu „Teoretické minimum“ — je to samostatná větev webu vedle procvičování.
         </p>
       </div>
     </div>

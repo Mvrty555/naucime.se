@@ -29,6 +29,12 @@ export default function ChemiePage() {
       </p>
       <div className="mt-6 flex flex-wrap gap-4 text-sm">
         <Link
+          href="/chemie/teorie"
+          className="font-semibold text-emerald-400 hover:text-emerald-300 hover:underline"
+        >
+          Teoretické minimum →
+        </Link>
+        <Link
           href="/procvicovani"
           className="font-semibold text-fuchsia-400 hover:text-fuchsia-300 hover:underline"
         >

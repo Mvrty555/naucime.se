@@ -29,6 +29,12 @@ export default function MatematikaPage() {
       </p>
       <div className="mt-6 flex flex-wrap gap-4 text-sm">
         <Link
+          href="/matematika/teorie"
+          className="font-semibold text-cyan-400 hover:text-cyan-300 hover:underline"
+        >
+          Teoretické minimum →
+        </Link>
+        <Link
           href="/procvicovani"
           className="font-semibold text-fuchsia-400 hover:text-fuchsia-300 hover:underline"
         >
