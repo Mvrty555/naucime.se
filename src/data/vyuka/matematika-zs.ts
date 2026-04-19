@@ -55,6 +55,55 @@ export const matematikaZsPages: Record<number, StrankaRocniku> = {
           ),
         ],
       },
+      {
+        id: "desetinne-a-odhad",
+        nazev: "Desetinná čísla a rozumný odhad",
+        rvpOdkaz:
+          "RVP ZV – Matematika: číselné představy a desetinná čísla (shrnutí oblasti, ne doslovný citát).",
+        postup: [
+          {
+            typ: "text",
+            odstavce: [
+              "Desetinná čárka odděluje celou část od desetin. První číslice za čárkou jsou desetiny, druhé setiny — stejný princip jako u peněz: 0,3 Kč je tři desetiny koruny.",
+              "Při sčítání desetin si zarovnej čárky pod sebe; počítáš stejné řády jako u celých čísel, jen hlídáš přenos do vyššího řádu.",
+            ],
+          },
+          {
+            typ: "metoda",
+            nazev: "Efektivní postup (mikrokroky)",
+            body: [
+              "Nejdřív odhadni řád výsledku: bude to větší než 1, nebo mezi 0 a 1?",
+              "Spočíti přesně druhým krokem a porovnej s odhadem — nesoulad tě upozorní na překlep v čárce.",
+              "Jednotky piš vždy ke zdrojovým údajům ve slovní úloze.",
+            ],
+          },
+          {
+            typ: "cviceni",
+            nazev: "Rychlá kontrola",
+            polozka: mc(
+              "Který zápis je největší?",
+              ["0,7", "0,07", "0,707", "0,007"],
+              2,
+              "0,707 má největší hodnotu v řádu desetin i setin.",
+            ),
+          },
+          {
+            typ: "text",
+            odstavce: [
+              "Zlomky a desetiny jsou dva zápisy téže myšlenky „části celku“. Umíš-li převést 1/4 na 0,25, snáze porovnáš velikosti v reálném kontextu (slevy, měření).",
+            ],
+          },
+          {
+            typ: "cviceni",
+            nazev: "Spojení se zlomky",
+            polozka: tf(
+              "Číslo 0,25 je stejné jako zlomek 1/4.",
+              true,
+              "Čtvrtina celku — stejná hodnota, jiný zápis.",
+            ),
+          },
+        ],
+      },
     ],
   },
   6: {
@@ -99,6 +148,45 @@ export const matematikaZsPages: Record<number, StrankaRocniku> = {
             true,
             "Obě dvojice mají stejný vztah — druhá je rozšířená.",
           ),
+        ],
+      },
+      {
+        id: "delitelnost",
+        nazev: "Dělitelnost a rozklad na prvočinitele",
+        rvpOdkaz:
+          "RVP ZV – Matematika: vlastnosti přirozených čísel, dělitelnost (obecná orientace v tématech 2. stupně).",
+        postup: [
+          {
+            typ: "text",
+            odstavce: [
+              "Číslo dělí druhé beze zbytku, když po dělení „nic nezbývá“. Hledání společného dělitele nebo násobku pomáhá při krácení zlomků i při rozvrhu skupin do stejně velkých týmů.",
+              "Prvočíslo má jen dva dělitele: jedničku a sebe sama. Rozklad na prvočinitele je jako rozložit stavebnici na nejmenší typy kostek — výsledek je jednoznačný až na pořadí.",
+            ],
+          },
+          {
+            typ: "metoda",
+            nazev: "Postup „krok za krokem“",
+            body: [
+              "Nejdřív zkus malé dělitele 2, 3, 5, 7 — často stačí.",
+              "Piš rozklad jako součin mocnin prvočísel (např. 12 = 2²·3).",
+              "Zkontroluj násobením zpět, že sedíš na původním čísle.",
+            ],
+          },
+          {
+            typ: "cviceni",
+            nazev: "Kontrola pojmů",
+            polozka: mc(
+              "Které číslo je dělitelné 3 beze zbytku?",
+              ["27", "28", "29", "31"],
+              0,
+              "Součet číslic 27 je dělitelný třemi.",
+            ),
+          },
+          {
+            typ: "cviceni",
+            nazev: "Prvočíslo",
+            polozka: tf("Číslo 1 je prvočíslo.", false, "Prvočíslo musí mít přesně dva dělitele; u 1 to neplatí."),
+          },
         ],
       },
     ],
@@ -146,6 +234,39 @@ export const matematikaZsPages: Record<number, StrankaRocniku> = {
             0,
             "100 % navíc znamená přidat celou původní hodnotu.",
           ),
+        ],
+      },
+      {
+        id: "soustavy-uvod",
+        nazev: "Dvě neznámé: úvod k soustavám rovnic",
+        rvpOdkaz:
+          "RVP ZV – Matematika: lineární rovnice a jejich soustavy (první intuitivní kroky před formální metodou).",
+        postup: [
+          {
+            typ: "text",
+            odstavce: [
+              "Ve slovní úloze často hledáš dvě neznámé najednou (např. počet jablek a hrušek). Jedna rovnice zřídka stačí — potřebuješ druhou informaci, která vytvoří soustavu.",
+              "Geometricky si soustavu představ jako průnik dvou přímek v rovině: společný bod (x, y) musí splnit obě rovnice najednou.",
+            ],
+          },
+          {
+            typ: "metoda",
+            nazev: "Substituční myšlenka (bez vzorců navíc)",
+            body: [
+              "Vyber jednodušší rovnici a vyjádři jednu neznámou pomocí druhé.",
+              "Dosad do druhé rovnice — zůstane jedna neznámá, kterou už umíš.",
+              "Zpětně dosad a ověř oběma rovnicemi.",
+            ],
+          },
+          {
+            typ: "cviceni",
+            nazev: "Rozhodnutí",
+            polozka: tf(
+              "Součet dvou rovnic vždy dá správné řešení soustavy bez další úpravy.",
+              false,
+              "Sčítání rovnic je užitečný trik, ale musíš ho dělat uváženě (ekvivalentní úpravy).",
+            ),
+          },
         ],
       },
     ],

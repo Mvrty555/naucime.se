@@ -1,8 +1,21 @@
 import Link from "next/link";
 import type { Lekce } from "@/types/vyuka";
+import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
+import { getVyukoveKroky } from "@/lib/vyuka/normalizeLekce";
 import { InteraktivniCviceni } from "./InteraktivniCviceni";
+import { ThematicPracticeBlock } from "./ThematicPracticeBlock";
 
-export function LekceSekce({ lekce }: { lekce: Lekce }) {
+type Props = {
+  lekce: Lekce;
+  predmet: PredmetVyuka;
+  stupe: StupeVyuka;
+  rocnik: number;
+};
+
+export function LekceSekce({ lekce, predmet, stupe, rocnik }: Props) {
+  const kroky = getVyukoveKroky(lekce);
+  let poradiCviceni = 0;
+
   return (
     <section
       id={lekce.id}
@@ -11,13 +24,60 @@ export function LekceSekce({ lekce }: { lekce: Lekce }) {
       <h2 className="text-xl font-semibold tracking-tight text-white sm:text-2xl">
         {lekce.nazev}
       </h2>
-      <div className="mt-4 space-y-4 leading-relaxed text-slate-300">
-        {lekce.odstavce.map((p, i) => (
-          <p key={i}>{p}</p>
-        ))}
+      {lekce.rvpOdkaz ? (
+        <p className="mt-2 rounded-lg border border-cyan-500/20 bg-cyan-950/20 px-3 py-2 text-xs leading-relaxed text-cyan-100/90">
+          <span className="font-semibold text-cyan-300">RVP / osnovy: </span>
+          {lekce.rvpOdkaz}
+        </p>
+      ) : null}
+
+      <div className="mt-6 space-y-8">
+        {kroky.map((krok, idx) => {
+          if (krok.typ === "text") {
+            return (
+              <div
+                key={`t-${idx}`}
+                className="space-y-4 leading-relaxed text-slate-300"
+              >
+                {krok.odstavce.map((p, i) => (
+                  <p key={i}>{p}</p>
+                ))}
+              </div>
+            );
+          }
+          if (krok.typ === "metoda") {
+            return (
+              <div
+                key={`m-${idx}`}
+                className="rounded-xl border border-fuchsia-500/25 bg-fuchsia-950/20 px-4 py-3"
+              >
+                <p className="text-xs font-bold uppercase tracking-wider text-fuchsia-300">
+                  {krok.nazev}
+                </p>
+                <ul className="mt-2 list-inside list-disc space-y-1.5 text-sm text-slate-300">
+                  {krok.body.map((b, i) => (
+                    <li key={i}>{b}</li>
+                  ))}
+                </ul>
+              </div>
+            );
+          }
+          poradiCviceni += 1;
+          return (
+            <div key={`c-${idx}`} className="space-y-2">
+              {krok.nazev ? (
+                <p className="text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  {krok.nazev}
+                </p>
+              ) : null}
+              <InteraktivniCviceni cviceni={krok.polozka} poradi={poradiCviceni} />
+            </div>
+          );
+        })}
       </div>
+
       {lekce.odkazNaClanek ? (
-        <p className="mt-4">
+        <p className="mt-6">
           <Link
             href={lekce.odkazNaClanek.href}
             className="text-sm font-semibold text-cyan-400 hover:text-cyan-300 hover:underline"
@@ -26,16 +86,14 @@ export function LekceSekce({ lekce }: { lekce: Lekce }) {
           </Link>
         </p>
       ) : null}
-      {lekce.cviceni.length > 0 ? (
-        <div className="mt-8 space-y-4">
-          <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-            Interaktivní cvičení
-          </h3>
-          {lekce.cviceni.map((c, i) => (
-            <InteraktivniCviceni key={i} cviceni={c} poradi={i + 1} />
-          ))}
-        </div>
-      ) : null}
+
+      <ThematicPracticeBlock
+        predmet={predmet}
+        stupe={stupe}
+        rocnik={rocnik}
+        temaId={lekce.id}
+        nazevTema={lekce.nazev}
+      />
     </section>
   );
 }

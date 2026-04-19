@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { PracticeArena } from "@/components/practice/PracticeArena";
+import { getTemataNaRocniku, getTopicPracticePool } from "@/lib/practice/topicPools";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
 
 const predmety: { id: PredmetVyuka; label: string }[] = [
@@ -15,10 +16,22 @@ export default function ProcvicovaniPage() {
   const [predmet, setPredmet] = useState<PredmetVyuka>("matematika");
   const [stupe, setStupe] = useState<StupeVyuka>("zs");
   const [rocnik, setRocnik] = useState(5);
+  const [temaId, setTemaId] = useState<string | null>(null);
 
   const rocniky = useMemo(
     () => (stupe === "zs" ? [5, 6, 7, 8, 9] : [1, 2, 3, 4]),
     [stupe],
+  );
+
+  const temataVRocniku = useMemo(
+    () => getTemataNaRocniku(predmet, stupe, rocnik),
+    [predmet, stupe, rocnik],
+  );
+
+  const temataSGeneratory = useMemo(
+    () =>
+      temataVRocniku.filter((t) => getTopicPracticePool(predmet, t.id).length > 0),
+    [predmet, temataVRocniku],
   );
 
   return (
@@ -36,8 +49,10 @@ export default function ProcvicovaniPage() {
           Procvičování
         </h1>
         <p className="mt-4 text-slate-400">
-          Generované příklady z velkého souboru šablon — každé kliknutí na „Další
-          příklad“ vytáří novou úlohu. Statistiky můžeš kdykoli vynulovat.
+          <strong className="text-slate-200">Obecný mix</strong> náhodně střídá typy
+          úloh z celého předmětu. <strong className="text-slate-200">Téma z výuky</strong>{" "}
+          drží generátory u konkrétní kapitoly — stejná logika jako pod lekcí na stránkách
+          ročníku.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -45,7 +60,10 @@ export default function ProcvicovaniPage() {
             <button
               key={p.id}
               type="button"
-              onClick={() => setPredmet(p.id)}
+              onClick={() => {
+                setPredmet(p.id);
+                setTemaId(null);
+              }}
               className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
                 predmet === p.id
                   ? "bg-cyan-500 text-slate-950 shadow-lg shadow-cyan-500/30"
@@ -63,6 +81,7 @@ export default function ProcvicovaniPage() {
             onClick={() => {
               setStupe("zs");
               setRocnik(5);
+              setTemaId(null);
             }}
             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
               stupe === "zs"
@@ -77,6 +96,7 @@ export default function ProcvicovaniPage() {
             onClick={() => {
               setStupe("ss");
               setRocnik(1);
+              setTemaId(null);
             }}
             className={`rounded-full px-4 py-2 text-sm font-medium transition ${
               stupe === "ss"
@@ -93,7 +113,10 @@ export default function ProcvicovaniPage() {
             <button
               key={r}
               type="button"
-              onClick={() => setRocnik(r)}
+              onClick={() => {
+                setRocnik(r);
+                setTemaId(null);
+              }}
               className={`min-h-9 min-w-[2.75rem] rounded-full px-3 text-sm font-semibold ${
                 rocnik === r
                   ? "bg-fuchsia-600 text-white"
@@ -104,13 +127,60 @@ export default function ProcvicovaniPage() {
             </button>
           ))}
         </div>
+
+        <div className="mt-8">
+          <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
+            Téma (stejné jako lekce v /vyuka)
+          </p>
+          <div className="mt-3 flex flex-wrap gap-2">
+            <button
+              type="button"
+              onClick={() => setTemaId(null)}
+              className={`rounded-full px-3 py-1.5 text-xs font-semibold sm:text-sm ${
+                temaId === null
+                  ? "bg-cyan-500 text-slate-950 shadow-md shadow-cyan-500/20"
+                  : "border border-slate-600 text-slate-300 hover:border-cyan-500/40"
+              }`}
+            >
+              Obecný mix
+            </button>
+            {temataSGeneratory.map((t) => (
+              <button
+                key={t.id}
+                type="button"
+                onClick={() => setTemaId(t.id)}
+                className={`max-w-full truncate rounded-full px-3 py-1.5 text-left text-xs font-medium sm:text-sm ${
+                  temaId === t.id
+                    ? "bg-fuchsia-600 text-white"
+                    : "border border-slate-600 text-slate-300 hover:border-fuchsia-500/50"
+                }`}
+                title={t.nazev}
+              >
+                {t.nazev}
+              </button>
+            ))}
+          </div>
+          {temataSGeneratory.length === 0 ? (
+            <p className="mt-2 text-xs text-slate-500">
+              Pro tento ročník zatím nemáme namapovaná témata generátorů — použij obecný
+              mix.
+            </p>
+          ) : null}
+        </div>
       </div>
 
       <div className="mx-auto max-w-3xl px-4 pb-20 sm:px-6">
-        <PracticeArena predmet={predmet} stupe={stupe} rocnik={rocnik} />
+        <PracticeArena
+          predmet={predmet}
+          stupe={stupe}
+          rocnik={rocnik}
+          temaId={temaId ?? undefined}
+        />
         <p className="mt-8 text-center text-xs text-slate-500">
-          Matematika má nejvíc generátorů; fyzika a chemie se budou dál
-          rozšiřovat. Chceš jiný typ úloh? Napiš nám téma.
+          Didaktika: u náročnějších látek dává smysl střídat krátký výklad, jednu
+          kontrolní úlohu a teprve pak další výklad — přesně tak jsou stavěné nové
+          lekce s polem <code className="text-slate-400">postup</code> ve výukových
+          datech.
         </p>
       </div>
     </div>

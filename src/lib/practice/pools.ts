@@ -25,6 +25,14 @@ export function getPracticePool(
 export function pickRandomQuestion(
   pool: QuestionGenerator[],
 ): ReturnType<QuestionGenerator> {
+  if (pool.length === 0) {
+    return {
+      prompt: "V této sadě zatím nejsou generované úlohy.",
+      options: ["—", "—", "—", "—"],
+      correctIndex: 0,
+      explanation: "Zkus jiné téma nebo obecné procvičování bez filtru.",
+    };
+  }
   const gen = pool[Math.floor(Math.random() * pool.length)];
   return gen();
 }

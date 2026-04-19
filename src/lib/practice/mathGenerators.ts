@@ -307,3 +307,43 @@ export const mathGenerators: QuestionGenerator[] = [
   genLinearniFunkce,
   genProcChyba,
 ];
+
+/** Klíče = `lekce.id` ve výukových datech. */
+const MATH_TOPIC_POOLS: Record<string, QuestionGenerator[]> = {
+  "poradi-operaci": [
+    genPoradi1,
+    genPoradi2,
+    genPoradiSeZavorkou,
+    genProcChyba,
+    genNasobilka,
+  ],
+  "zlomky-zaklady": [genZlomekVetsi, genZlomekSoucet, genNasobilka],
+  "cela-cisla": [genZapornaSecteni, genPoradi1, genDelitelnost],
+  "pomer-meritko": [genProcenta, genNasobilka, genDelitelnost, genRovnice],
+  "linearni-rovnice": [genRovnice, genPoradi1, genProcChyba],
+  procenta: [genProcenta, genDesetinnePlus],
+  mnohocleny: [genProcChyba, genPoradi1, genLinearniFunkce],
+  "linearni-funkce": [genLinearniFunkce, genRovnice],
+  mocniny: [genMocnina, genDruhaMocnina, genPoradiSeZavorkou],
+  statistika: [genPrumer, genDelitelnost],
+  "vyrazy-vztahy": [genProcChyba, genDruhaMocnina, genPoradiSeZavorkou, genZlomekSoucet],
+  "funkce-vlastnosti": [genLinearniFunkce, genRovnice, genPoradi1],
+  goniometrie: [genPythagoras, genUhelTrojuhelnik, genDruhaMocnina],
+  posloupnosti: [genDelitelnost, genRovnice, genLinearniFunkce],
+  logaritmy: [genMocnina, genPoradi2, genRovnice],
+  "derivace-uvod": [genLinearniFunkce, genMocnina, genDruhaMocnina],
+  "integral-uvod": [genObsahCtverec, genObjemKvadr, genObvodObdelnik],
+  "strategie-reseni": [genPoradi1, genRovnice, genDelitelnost],
+  "desetinne-a-odhad": [genDesetinnePlus, genPoradi1, genZlomekVetsi],
+  delitelnost: [genDelitelnost, genNasobilka, genPoradi1],
+  "soustavy-uvod": [genRovnice, genPoradi2, genProcChyba],
+};
+
+function zdvojPool(g: QuestionGenerator[]): QuestionGenerator[] {
+  return [...g, ...g];
+}
+
+export function getMathTopicPool(temaId: string): QuestionGenerator[] {
+  const base = MATH_TOPIC_POOLS[temaId];
+  return base ? zdvojPool(base) : [];
+}

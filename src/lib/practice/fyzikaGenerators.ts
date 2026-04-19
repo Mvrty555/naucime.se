@@ -153,3 +153,35 @@ export const fyzikaGenerators: QuestionGenerator[] = [
   genRychlost,
   genElektrina,
 ];
+
+function zdvojFyz(g: QuestionGenerator[]): QuestionGenerator[] {
+  return [...g, ...g];
+}
+
+/** Klíče = `lekce.id` ve výuce fyziky. */
+const FYZ_TOPIC_POOLS: Record<string, QuestionGenerator[]> = {
+  "mereni-si": [genRychlost, genVykon, genPrace],
+  "pohyb-klid": [genRychlost, genVykon],
+  "svetlo-stin": [genZrcadlo, genVlna],
+  hustota: [genHmotnostHustota, genTlakSloupec],
+  tlak: [genTlakSloupec, genHmotnostHustota],
+  "prace-vykon": [genPrace, genVykon, genEnergiePad],
+  "jednoduche-obvody": [genElektrina, genVykon],
+  "rychlost-zrychleni": [genRychlost, genEnergiePad],
+  vlny: [genVlna, genKmitocet],
+  "mechanicka-energie": [genEnergiePad, genPrace, genVykon],
+  "soco-cta": [genTeplo, genPrace],
+  "newtonovy-zakony": [genRychlost, genPrace, genEnergiePad],
+  hybnost: [genRychlost, genVykon, genPrace],
+  coulomb: [genElektrina, genPrace],
+  "magneticke-pole": [genElektrina, genVlna],
+  "harmonicky-pohyb": [genKmitocet, genVlna, genRychlost],
+  "tepelna-rovnova": [genTeplo, genHmotnostHustota],
+  foton: [genVlna, genZrcadlo],
+  "relativita-nastin": [genRychlost, genEnergiePad],
+};
+
+export function getFyzikaTopicPool(temaId: string): QuestionGenerator[] {
+  const b = FYZ_TOPIC_POOLS[temaId];
+  return b ? zdvojFyz(b) : [];
+}

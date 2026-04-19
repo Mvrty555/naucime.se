@@ -1,22 +1,42 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
+import { getTopicPracticePool } from "@/lib/practice/topicPools";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
 
 type Props = {
   predmet: PredmetVyuka;
   stupe: StupeVyuka;
   rocnik: number;
+  /** Jen příklady navázané na konkrétní lekci (`lekce.id`). */
+  temaId?: string;
   /** Kratší varianta do vložené stránky */
   kompaktni?: boolean;
 };
 
-export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
-  const pool = useMemo(
+export function PracticeArena({
+  predmet,
+  stupe,
+  rocnik,
+  temaId,
+  kompaktni,
+}: Props) {
+  const topicPool = useMemo(
+    () => (temaId ? getTopicPracticePool(predmet, temaId) : []),
+    [predmet, temaId],
+  );
+  const generalPool = useMemo(
     () => getPracticePool(predmet, stupe, rocnik),
     [predmet, stupe, rocnik],
   );
+  const pool = useMemo(() => {
+    if (temaId && topicPool.length > 0) return topicPool;
+    if (temaId) return [];
+    return generalPool;
+  }, [temaId, topicPool, generalPool]);
+
   const [otazka, setOtazka] = useState(() => pickRandomQuestion(pool));
   const [vybrano, setVybrano] = useState<number | null>(null);
   const [hotovo, setHotovo] = useState(0);
@@ -24,8 +44,8 @@ export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
   const [serie, setSerie] = useState(0);
   const [nejSerie, setNejSerie] = useState(0);
 
-  /** `useState` inicializuje jen při mountu — při změně poolu (předmět/stupeň) synchronizovat. */
   useEffect(() => {
+    if (pool.length === 0) return;
     setOtazka(pickRandomQuestion(pool));
     setVybrano(null);
     setHotovo(0);
@@ -35,6 +55,7 @@ export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
   }, [pool]);
 
   const dalsi = useCallback(() => {
+    if (pool.length === 0) return;
     setOtazka(pickRandomQuestion(pool));
     setVybrano(null);
   }, [pool]);
@@ -58,6 +79,28 @@ export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
   const jeSpravne = vybrano !== null && vybrano === otazka.correctIndex;
   const jeSpatne = vybrano !== null && vybrano !== otazka.correctIndex;
 
+  if (temaId && pool.length === 0) {
+    return (
+      <section
+        className={
+          kompaktni
+            ? "rounded-2xl border border-amber-500/25 bg-slate-900/50 p-5"
+            : "mx-auto max-w-2xl rounded-2xl border border-amber-500/25 bg-slate-900/50 p-6 sm:p-8"
+        }
+      >
+        <p className="text-sm text-slate-300">
+          Pro vybrané téma zatím nemáme generované příklady v této podobě.
+        </p>
+        <Link
+          href="/procvicovani"
+          className="mt-3 inline-flex text-sm font-semibold text-cyan-400 hover:underline"
+        >
+          Zkusit obecné procvičování →
+        </Link>
+      </section>
+    );
+  }
+
   return (
     <section
       className={
@@ -69,10 +112,12 @@ export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
-            Procvičování
+            {temaId ? "Procvičení tématu" : "Procvičování"}
           </h2>
           <p className="mt-1 text-xs text-slate-400">
-            Nekonečná sada náhodných příkladů — pokaždé jiná čísla.
+            {temaId
+              ? "Příklady jen z okruhu zvolené lekce — náhodná čísla, stejná pravidla."
+              : "Nekonečná sada náhodných příkladů — pokaždé jiná čísla."}
           </p>
         </div>
         <dl className="flex gap-4 text-right text-xs text-slate-400">
@@ -168,8 +213,8 @@ export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
           </div>
         ) : (
           <p className="mt-3 text-xs text-slate-500">
-            Vyber odpověď. Po vyhodnocení dostaneš další náhodný příklad z velkého
-            poolu generátorů.
+            Vyber odpověď. Po vyhodnocení dostaneš další náhodný příklad z aktuální
+            sady generátorů.
           </p>
         )}
       </div>

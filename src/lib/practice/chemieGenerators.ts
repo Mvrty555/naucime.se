@@ -112,3 +112,33 @@ export const chemieGenerators: QuestionGenerator[] = [
   genMolH2O,
   genLatkoveMnozstvi,
 ];
+
+function zdvojChem(g: QuestionGenerator[]): QuestionGenerator[] {
+  return [...g, ...g, ...g];
+}
+
+const CHEM_TOPIC_POOLS: Record<string, QuestionGenerator[]> = {
+  "smesi-ciste": [genReakceTyp, genPh, genMolH2O],
+  bezpecnost: [genKyselina, genReakceTyp, genPh],
+  periodicka: [genMolH2O, genMolCO2, genPocetAtomu],
+  "atom-molekula": [genPocetAtomu, genMolH2O, genMolCO2],
+  "chemicka-rovnice": [genReakceTyp, genOxidace, genRedox],
+  "latkove-mnozstvi": [genLatkoveMnozstvi, genRoztok, genMolH2O],
+  roztoky: [genRoztok, genPh, genLatkoveMnozstvi],
+  katalyzator: [genReakceTyp, genRedox],
+  uhlovodiky: [genPocetAtomu, genMolCO2, genReakceTyp],
+  "kyseliny-alkoholy": [genKyselina, genPocetAtomu, genMolH2O],
+  vazba: [genPocetAtomu, genMolH2O, genReakceTyp],
+  entalpie: [genReakceTyp, genPh, genRedox],
+  rychlost: [genRoztok, genLatkoveMnozstvi],
+  rovnovaha: [genPh, genRedox, genOxidace],
+  ph: [genPh, genKyselina],
+  redox: [genRedox, genOxidace],
+  nukleofil: [genKyselina, genReakceTyp, genPocetAtomu],
+  "bezpecnost-lab": [genKyselina, genPh, genReakceTyp],
+};
+
+export function getChemieTopicPool(temaId: string): QuestionGenerator[] {
+  const b = CHEM_TOPIC_POOLS[temaId];
+  return b ? zdvojChem(b) : [];
+}

@@ -34,10 +34,10 @@ export default function VyukaHubPage() {
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-400">
           Pro každý předmět najdeš stránky pro{" "}
           <strong className="text-slate-200">5.–9. třídu ZŠ</strong> a{" "}
-          <strong className="text-slate-200">1.–4. ročník SŠ</strong>. Každá
-          stránka obsahuje dvě lekce s vlastním textem a několik interaktivních
-          úloh (výběr odpovědi / ano–ne) a blok procvičování s generovanými
-          příklady.
+          <strong className="text-slate-200">1.–4. ročník SŠ</strong>. Lekce jsou
+          členěné do kroků (výklad → krátká kontrola → další výklad), u každé
+          kapitoly je zvlášť generované procvičení jen k danému tématu; obecný mix je
+          na stránce <Link href="/procvicovani" className="text-cyan-400 hover:underline">procvičování</Link>.
         </p>
       </div>
 

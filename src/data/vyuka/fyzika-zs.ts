@@ -42,6 +42,39 @@ export const fyzikaZsPages: Record<number, StrankaRocniku> = {
           tf("Čím menší zdroj světla, ostřejší stín na ostrých hranách.", true, "Bodový zdroj dává ostré penumbry méně."),
         ],
       },
+      {
+        id: "mereni-si",
+        nazev: "Měření a jednotky SI",
+        rvpOdkaz:
+          "RVP ZV – Fyzika: experimentování, měření a práce s jednotkami (obecná vazba na oblast přírodopisu/fyziky).",
+        postup: [
+          {
+            typ: "text",
+            odstavce: [
+              "Metr, kilogram, sekunda a odvozené jednotky (např. newton jako kg·m/s²) tvoří společný jazyk fyziky. Když si jednotky doplníš už ve slovníku úlohy, méně často „vypadne“ o řád jiný výsledek.",
+              "Převody dělej přes základní jednotku: např. kilometry na metry vynásobením tisícem — krok za krokem, bez skákání „od oka“.",
+            ],
+          },
+          {
+            typ: "metoda",
+            nazev: "Kontrola rozumnosti",
+            body: [
+              "Po výpočtu se zeptej: dává řád odpovědi smysl? (rychlost chůže řádově m/s, ne tisíce).",
+              "Zkontroluj, zda sčítáš jen stejné veličiny (nelze sčítat metry a sekundy).",
+            ],
+          },
+          {
+            typ: "cviceni",
+            nazev: "Jednotky",
+            polozka: mc(
+              "Základní jednotka délky v SI je:",
+              ["metr", "kilometr", "centimetr", "lit"],
+              0,
+              "Metr je základ; ostatní jsou násobky nebo díly.",
+            ),
+          },
+        ],
+      },
     ],
   },
   6: {

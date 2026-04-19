@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { PracticeArena } from "@/components/practice/PracticeArena";
 import { LekceSekce } from "@/components/vyuka/LekceSekce";
 import {
   getVyukaStranka,
@@ -111,17 +110,29 @@ export default async function VyukaRocnikPage(props: { params: Promise<Params> }
 
       <div className="relative mx-auto max-w-3xl space-y-10 px-4 pb-12 sm:px-6">
         {stranka.lekce.map((lekce) => (
-          <LekceSekce key={lekce.id} lekce={lekce} />
+          <LekceSekce
+            key={lekce.id}
+            lekce={lekce}
+            predmet={predmet}
+            stupe={stupe}
+            rocnik={rocnik}
+          />
         ))}
       </div>
 
       <div className="relative mx-auto max-w-3xl px-4 pb-20 sm:px-6">
-        <PracticeArena
-          predmet={predmet}
-          stupe={stupe}
-          rocnik={rocnik}
-          kompaktni
-        />
+        <div className="rounded-2xl border border-white/10 bg-slate-900/40 p-6 text-center backdrop-blur">
+          <p className="text-sm text-slate-400">
+            Opakování napříč celým ročníkem najdeš na stránce procvičování — tam lze
+            zapnout i filtr podle konkrétního tématu z výuky.
+          </p>
+          <Link
+            href="/procvicovani"
+            className="mt-3 inline-flex text-sm font-semibold text-cyan-400 hover:text-cyan-300 hover:underline"
+          >
+            Otevřít procvičování →
+          </Link>
+        </div>
       </div>
     </div>
   );
