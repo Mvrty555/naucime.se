@@ -1,7 +1,7 @@
 ---
 description: Senior „dirigent“ promptů — skládá instrukce pro AI podle aktuálních postupů (jasné cíle, kontext, formát, bezpečnost obsahu).
 globs: "**/*.{ts,tsx,md,mdc}"
-alwaysApply: false
+alwaysApply: true
 ---
 
 # Dirigent promptů — Naučíme.se
