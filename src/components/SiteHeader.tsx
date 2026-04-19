@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 const nav = [
+  { href: "/procvicovani", label: "Procvičování" },
   { href: "/vyuka", label: "Výuka" },
   { href: "/zakladni-skola", label: "ZŠ" },
   { href: "/matematika", label: "Matematika" },
@@ -11,49 +12,49 @@ const nav = [
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/90 bg-white/85 backdrop-blur-md supports-[backdrop-filter]:bg-white/70">
+    <header className="sticky top-0 z-50 border-b border-white/5 bg-slate-950/75 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
         <Link
           href="/"
-          className="text-base font-semibold tracking-tight text-slate-900 transition hover:text-slate-700 sm:text-lg"
+          className="bg-gradient-to-r from-cyan-400 to-fuchsia-400 bg-clip-text text-base font-bold tracking-tight text-transparent sm:text-lg"
         >
-          Naučíme<span className="text-sky-600">.se</span>
+          Naučíme.se
         </Link>
 
         <nav
-          className="hidden items-center gap-0.5 text-sm font-medium text-slate-600 md:flex md:gap-1"
+          className="hidden items-center gap-0.5 text-sm font-medium text-slate-400 lg:flex lg:gap-1"
           aria-label="Hlavní navigace"
         >
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-2.5 py-2 transition duration-150 ease-out hover:bg-slate-100 hover:text-slate-900 motion-reduce:transition-none md:px-3"
+              className="rounded-lg px-2.5 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white lg:px-3"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <details className="relative md:hidden">
+        <details className="relative lg:hidden">
           <summary
-            className="flex cursor-pointer list-none items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 [&::-webkit-details-marker]:hidden"
+            className="flex cursor-pointer list-none items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 shadow-inner shadow-white/5 [&::-webkit-details-marker]:hidden"
             aria-label="Otevřít menu"
           >
-            <span>Menu</span>
-            <span className="text-slate-500" aria-hidden>
+            Menu
+            <span className="text-cyan-400" aria-hidden>
               ▾
             </span>
           </summary>
           <nav
-            className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-slate-200/90 bg-white py-1 shadow-lg ring-1 ring-slate-900/5"
+            className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-slate-900/95 py-1 shadow-2xl shadow-black/40 ring-1 ring-cyan-500/10 backdrop-blur-xl"
             aria-label="Mobilní navigace"
           >
             {nav.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="block px-4 py-2.5 text-sm text-slate-700 transition hover:bg-slate-50 hover:text-slate-900"
+                className="block px-4 py-2.5 text-sm text-slate-200 transition hover:bg-white/5 hover:text-cyan-300"
               >
                 {item.label}
               </Link>

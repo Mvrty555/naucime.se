@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { PracticeArena } from "@/components/practice/PracticeArena";
 import { LekceSekce } from "@/components/vyuka/LekceSekce";
 import {
   getVyukaStranka,
@@ -66,39 +67,40 @@ export default async function VyukaRocnikPage(props: { params: Promise<Params> }
     stupe === "zs" ? `${rocnik}. třída ZŠ` : `${rocnik}. ročník SŠ`;
 
   return (
-    <div className="border-b border-slate-200/90 bg-gradient-to-b from-white to-slate-50/90">
-      <div className="mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
-        <nav className="flex flex-wrap gap-3 text-sm font-medium text-sky-700">
-          <Link href="/vyuka" className="hover:underline">
+    <div className="relative border-b border-white/5">
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/10 via-transparent to-transparent" />
+      <div className="relative mx-auto max-w-3xl px-4 py-10 sm:px-6 sm:py-14">
+        <nav className="flex flex-wrap gap-3 text-sm font-medium text-cyan-400">
+          <Link href="/vyuka" className="hover:text-cyan-300 hover:underline">
             ← Výuka podle ročníku
           </Link>
-          <span className="text-slate-300" aria-hidden>
+          <span className="text-slate-600" aria-hidden>
             |
           </span>
-          <Link href={`/${predmet}`} className="hover:underline">
+          <Link href={`/${predmet}`} className="hover:text-cyan-300 hover:underline">
             {predLabel}
           </Link>
         </nav>
 
-        <p className="mt-6 text-sm font-medium uppercase tracking-wide text-sky-700">
+        <p className="mt-6 text-xs font-bold uppercase tracking-wider text-cyan-400/80">
           {predLabel} · {stupLabel}
         </p>
-        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">
+        <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
           {stranka.nadpis}
         </h1>
         <p className="mt-1 text-sm font-medium text-slate-500">{rocnikTxt}</p>
-        <p className="mt-4 text-lg leading-relaxed text-slate-600">{stranka.uvod}</p>
+        <p className="mt-4 text-lg leading-relaxed text-slate-400">{stranka.uvod}</p>
 
-        <div className="mt-10 flex flex-wrap gap-2 text-sm">
+        <div className="mt-10 flex flex-wrap items-center gap-2 text-sm">
           <span className="text-slate-500">Skok na ročník:</span>
           {(stupe === "zs" ? [5, 6, 7, 8, 9] : [1, 2, 3, 4]).map((r) => (
             <Link
               key={r}
               href={`/vyuka/${predmet}/${stupe}/${r}`}
-              className={`rounded-full px-3 py-1 font-medium ${
+              className={`rounded-full px-3 py-1 font-medium transition ${
                 r === rocnik
-                  ? "bg-sky-600 text-white"
-                  : "border border-slate-200 bg-white text-slate-700 hover:border-sky-300"
+                  ? "bg-gradient-to-r from-cyan-500 to-sky-500 text-slate-950 shadow-lg shadow-cyan-500/20"
+                  : "border border-white/10 bg-slate-900/60 text-slate-300 hover:border-cyan-500/40"
               }`}
             >
               {stupe === "zs" ? `${r}. tř.` : `${r}. r.`}
@@ -107,10 +109,19 @@ export default async function VyukaRocnikPage(props: { params: Promise<Params> }
         </div>
       </div>
 
-      <div className="mx-auto max-w-3xl space-y-10 px-4 pb-20 sm:px-6">
+      <div className="relative mx-auto max-w-3xl space-y-10 px-4 pb-12 sm:px-6">
         {stranka.lekce.map((lekce) => (
           <LekceSekce key={lekce.id} lekce={lekce} />
         ))}
+      </div>
+
+      <div className="relative mx-auto max-w-3xl px-4 pb-20 sm:px-6">
+        <PracticeArena
+          predmet={predmet}
+          stupe={stupe}
+          rocnik={rocnik}
+          kompaktni
+        />
       </div>
     </div>
   );

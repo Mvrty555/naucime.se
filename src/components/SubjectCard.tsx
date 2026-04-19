@@ -9,9 +9,9 @@ type SubjectCardProps = {
 };
 
 const bar = {
-  sky: "from-sky-500 to-blue-600",
-  violet: "from-violet-500 to-purple-600",
-  emerald: "from-emerald-500 to-teal-600",
+  sky: "from-cyan-400 to-sky-500",
+  violet: "from-fuchsia-400 to-violet-500",
+  emerald: "from-emerald-400 to-teal-400",
 } as const;
 
 export function SubjectCard({
@@ -24,22 +24,22 @@ export function SubjectCard({
   return (
     <Link
       href={href}
-      className="group flex flex-col rounded-2xl border border-slate-200/90 bg-white p-6 shadow-sm ring-1 ring-slate-900/[0.04] transition duration-200 ease-out hover:-translate-y-0.5 hover:border-slate-300/90 hover:shadow-md motion-reduce:transform-none motion-reduce:transition-none"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/40 p-6 shadow-lg shadow-black/20 ring-1 ring-white/5 transition duration-200 hover:-translate-y-1 hover:border-cyan-500/30 hover:shadow-cyan-950/30 motion-reduce:transform-none"
     >
       <div
-        className={`mb-4 h-1 w-12 rounded-full bg-gradient-to-r ${bar[accent]}`}
+        className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-r opacity-90 ${bar[accent]}`}
       />
-      <h2 className="text-xl font-semibold tracking-tight text-slate-900 transition group-hover:text-sky-800">
+      <h2 className="mt-2 text-xl font-semibold tracking-tight text-white group-hover:text-cyan-200">
         {title}
       </h2>
-      <p className="mt-1 text-xs font-medium uppercase tracking-wide text-slate-500">
+      <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-slate-500">
         {grades}
       </p>
-      <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">
+      <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-400">
         {description}
       </p>
-      <span className="mt-4 text-sm font-medium text-sky-700 transition group-hover:translate-x-0.5 motion-reduce:group-hover:translate-x-0">
-        Přejít na předmět →
+      <span className="mt-4 text-sm font-semibold text-cyan-400 group-hover:text-cyan-300">
+        Otevřít →
       </span>
     </Link>
   );

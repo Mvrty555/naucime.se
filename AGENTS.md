@@ -14,4 +14,10 @@ Stručně:
 4. Ukládej strukturovaná data do `src/data/` (např. `src/data/vyuka/`), stránky do `src/app/`.
 5. Ročníkové texty s interaktivními úlohami publikuj přes šablonu `/vyuka/[predmet]/[stupe]/[rocnik]` a rozšiř `registry.ts` + příslušný soubor `*-zs.ts` / `*-ss.ts`.
 
+## Dirigent promptů (meta-instrukce)
+
+Při skládání nebo ladění **promptů a systémových instrukcí** pro AI použij roli v:
+
+`.cursor/rules/dirigent-promptu.mdc`
+
 Tento soubor doplňuj, pokud se v projektu objeví další specializované role.

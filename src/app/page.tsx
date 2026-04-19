@@ -4,59 +4,66 @@ import { SubjectCard } from "@/components/SubjectCard";
 export default function Home() {
   return (
     <div>
-      <section className="border-b border-slate-200/90 bg-gradient-to-b from-white via-white to-slate-50/80">
-        <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-20">
-          <p className="text-sm font-medium uppercase tracking-wider text-sky-700">
+      <section className="relative border-b border-white/5 overflow-hidden">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-cyan-500/15 via-transparent to-transparent" />
+        <div className="relative mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-24">
+          <p className="text-xs font-bold uppercase tracking-[0.25em] text-cyan-400/90">
             Pro žáky ZŠ a SŠ
           </p>
-          <h1 className="mt-3 max-w-3xl text-[clamp(1.75rem,4vw+1rem,3rem)] font-semibold leading-[1.15] tracking-tight text-slate-900">
+          <h1 className="mt-4 max-w-3xl text-[clamp(1.85rem,4.5vw+0.5rem,3.25rem)] font-semibold leading-[1.1] tracking-tight text-white">
             Uč se matematiku, fyziku a chemii{" "}
-            <span className="text-sky-700">srozumitelně a krok za krokem</span>
+            <span className="bg-gradient-to-r from-cyan-300 to-fuchsia-400 bg-clip-text text-transparent">
+              srozumitelně a v praxi
+            </span>
           </h1>
-          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-600 sm:text-lg">
-            Naučíme.se postupně pokryje témata podle školních osnov — s vysvětlením,
-            příklady a interaktivními cvičeními, která si můžeš zkoušet vlastním
-            tempem.
+          <p className="mt-6 max-w-2xl text-base leading-relaxed text-slate-400 sm:text-lg">
+            Výklad podle ročníků, mapa témat a generované příklady — můžeš trénovat
+            tak dlouho, jak potřebuješ, s okamžitou zpětnou vazbou.
           </p>
           <div className="mt-10 flex flex-wrap gap-3 sm:gap-4">
             <Link
-              href="/vyuka"
-              className="inline-flex min-h-11 min-w-[10rem] items-center justify-center rounded-full bg-sky-600 px-6 text-sm font-semibold text-white shadow-sm transition duration-200 ease-out hover:bg-sky-700 hover:shadow-md active:scale-[0.98] motion-reduce:active:scale-100"
+              href="/procvicovani"
+              className="inline-flex min-h-11 min-w-[10rem] items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-6 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/25 transition hover:brightness-110 active:scale-[0.98] motion-reduce:active:scale-100"
             >
-              Výuka ZŠ + SŠ
+              Neomezené procvičování
+            </Link>
+            <Link
+              href="/vyuka"
+              className="inline-flex min-h-11 min-w-[10rem] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 text-sm font-semibold text-white backdrop-blur transition hover:border-cyan-500/40 hover:bg-white/10"
+            >
+              Výuka po ročnících
             </Link>
             <Link
               href="/matematika"
-              className="inline-flex min-h-11 items-center justify-center rounded-full bg-slate-900 px-6 text-sm font-semibold text-white shadow-sm transition duration-200 ease-out hover:bg-slate-800 active:scale-[0.98] motion-reduce:active:scale-100"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 px-6 text-sm font-semibold text-fuchsia-100 transition hover:bg-fuchsia-500/20"
             >
               Začít matematikou
             </Link>
             <Link
               href="/#predmety"
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-slate-300/90 bg-white px-6 text-sm font-semibold text-slate-800 transition duration-200 ease-out hover:border-slate-400 hover:bg-slate-50"
+              className="inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-slate-400 transition hover:text-white"
             >
-              Vybrat předmět
+              Předměty ↓
             </Link>
           </div>
         </div>
       </section>
 
       <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16">
-        <div className="flex flex-col gap-4 rounded-2xl border border-slate-200/90 bg-white/90 p-6 shadow-sm ring-1 ring-slate-900/[0.03] sm:flex-row sm:items-center sm:justify-between sm:p-8">
+        <div className="flex flex-col gap-4 rounded-2xl border border-white/10 bg-slate-900/50 p-6 backdrop-blur sm:flex-row sm:items-center sm:justify-between sm:p-8">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 sm:text-xl">
+            <h2 className="text-lg font-semibold text-white sm:text-xl">
               Druhý stupeň základní školy
             </h2>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-600 sm:text-base">
-              Přehled témat pro 5.–9. třídu z matematiky, fyziky a chemie — jako
-              mapa k dalším výkladům a cvičením na webu.
+            <p className="mt-2 max-w-xl text-sm leading-relaxed text-slate-400 sm:text-base">
+              Přehled témat 5.–9. třídy — propojený s výukou a procvičováním.
             </p>
           </div>
           <Link
             href="/zakladni-skola"
-            className="inline-flex shrink-0 items-center justify-center rounded-full border border-sky-200 bg-sky-50 px-5 py-2.5 text-sm font-semibold text-sky-900 transition hover:bg-sky-100"
+            className="inline-flex shrink-0 items-center justify-center rounded-full border border-cyan-500/40 bg-cyan-500/10 px-5 py-2.5 text-sm font-semibold text-cyan-200 transition hover:bg-cyan-500/20"
           >
-            Otevřít přehled ZŠ →
+            Mapa témat ZŠ →
           </Link>
         </div>
       </section>
@@ -65,57 +72,57 @@ export default function Home() {
         id="predmety"
         className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16"
       >
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
           Předměty
         </h2>
-        <p className="mt-2 max-w-2xl text-slate-600">
-          Každá sekce bude obsahovat přehled témat, krátká vysvětlení a místo pro
-          procvičení — strukturu budeme rozšiřovat spolu s obsahem.
+        <p className="mt-2 max-w-2xl text-slate-400">
+          Každá sekce spojuje témata, výklad a procvičení — dál přidáváme hloubku i
+          typy úloh.
         </p>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           <SubjectCard
             href="/matematika"
             title="Matematika"
             grades="2. stupeň ZŠ a SŠ"
-            description="Od zlomků a rovnic přes funkce až po úvod do derivací — přehledně, s příklady a úkoly."
+            description="Od zlomků a rovnic přes funkce až po nástroje pro SŠ — s příklady a generátory."
             accent="sky"
           />
           <SubjectCard
             href="/fyzika"
             title="Fyzika"
             grades="2. stupeň ZŠ a SŠ"
-            description="Mechanika, teplo, elektřina, vlny i moderní fyzika v souvislostech, které dávají smysl."
+            description="Mechanika, teplo, elektřina, vlny i moderní fyzika — intuitivně a propojeně."
             accent="violet"
           />
           <SubjectCard
             href="/chemie"
             title="Chemie"
             grades="2. stupeň ZŠ a SŠ"
-            description="Prvky, reakce, stechiometrie i organická chemie — bez zbytečného žargonu navíc."
+            description="Prvky, reakce, stechiometrie i organika — bez zbytečného žargonu."
             accent="emerald"
           />
         </div>
       </section>
 
-      <section className="border-y border-slate-200/90 bg-white">
+      <section className="border-y border-white/5 bg-slate-900/30">
         <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6 sm:py-16">
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
-            Co tu postupně najdeš
+          <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
+            Co tu najdeš
           </h2>
           <ul className="mt-8 grid gap-4 sm:grid-cols-2">
             {[
-              "Mapa témat podle ročníků a osnov",
-              "Textová vysvětlení s názornými příklady",
-              "Interaktivní cvičení a okamžitá zpětná vazba",
-              "Typové úlohy z testů a zkoušení",
-              "Místo na dotazy a časté omyly (FAQ)",
+              "Výuka po ročnících (ZŠ 5–9, SŠ 1–4)",
+              "Generované příklady bez konce",
+              "Textové lekce s drobnými úlohami",
+              "Mapa témat podle školy",
+              "Pravidla pro férový obsah (žádné kopírování)",
             ].map((item) => (
               <li
                 key={item}
-                className="flex gap-3 rounded-xl border border-slate-100 bg-slate-50/90 px-4 py-3.5 text-slate-700 transition hover:border-slate-200 hover:bg-white"
+                className="flex gap-3 rounded-xl border border-white/10 bg-slate-950/50 px-4 py-3.5 text-slate-300 transition hover:border-cyan-500/30"
               >
                 <span
-                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-sky-100 text-xs font-bold text-sky-800"
+                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-cyan-500/20 text-xs font-bold text-cyan-300"
                   aria-hidden
                 >
                   ✓
@@ -128,25 +135,22 @@ export default function Home() {
       </section>
 
       <section id="o-projektu" className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
-        <h2 className="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl">
+        <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
           O projektu
         </h2>
-        <div className="mt-6 max-w-3xl space-y-4 text-slate-600 leading-relaxed">
+        <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-slate-400">
           <p>
-            Naučíme.se vzniká jako otevřený výukový web zaměřený na přírodní
-            předměty. Cílem je doplnit školní výuku materiály, které jdou číst i
-            doma, opakovat podle vlastní potřeby a ověřovat si pochopení
-            cvičeními.
+            Naučíme.se doplňuje školní výuku materiály na čtení doma, opakování
+            vlastním tempem a okamžité ověření u procvičování.
           </p>
           <p>
-            Obsah připravujeme vlastními texty podle didaktických pravidel v{" "}
-            <code className="rounded-md bg-slate-100 px-1.5 py-0.5 text-sm text-slate-800">
+            Obsah vzniká podle{" "}
+            <code className="rounded-md bg-white/10 px-1.5 py-0.5 text-sm text-slate-200">
               AGENTS.md
             </code>{" "}
-            a v Cursor pravidlech — bez kopírování cizích učebnic. Témata pro ZŠ
-            najdeš v sekci{" "}
-            <Link href="/zakladni-skola" className="font-medium text-sky-700 hover:underline">
-              Základní škola
+            a Cursor pravidel. Témata ZŠ jsou v{" "}
+            <Link href="/zakladni-skola" className="font-medium text-cyan-400 hover:underline">
+              přehledu základní školy
             </Link>
             .
           </p>

@@ -1,0 +1,168 @@
+"use client";
+
+import { useCallback, useMemo, useState } from "react";
+import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
+import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
+
+type Props = {
+  predmet: PredmetVyuka;
+  stupe: StupeVyuka;
+  rocnik: number;
+  /** Kratší varianta do vložené stránky */
+  kompaktni?: boolean;
+};
+
+export function PracticeArena({ predmet, stupe, rocnik, kompaktni }: Props) {
+  const pool = useMemo(
+    () => getPracticePool(predmet, stupe, rocnik),
+    [predmet, stupe, rocnik],
+  );
+  const [otazka, setOtazka] = useState(() => pickRandomQuestion(pool));
+  const [vybrano, setVybrano] = useState<number | null>(null);
+  const [hotovo, setHotovo] = useState(0);
+  const [spravneCelkem, setSpravneCelkem] = useState(0);
+  const [serie, setSerie] = useState(0);
+  const [nejSerie, setNejSerie] = useState(0);
+
+  const dalsi = useCallback(() => {
+    setOtazka(pickRandomQuestion(pool));
+    setVybrano(null);
+  }, [pool]);
+
+  const vyber = (i: number) => {
+    if (vybrano !== null) return;
+    setVybrano(i);
+    setHotovo((h) => h + 1);
+    if (i === otazka.correctIndex) {
+      setSpravneCelkem((s) => s + 1);
+      setSerie((s) => {
+        const n = s + 1;
+        setNejSerie((m) => Math.max(m, n));
+        return n;
+      });
+    } else {
+      setSerie(0);
+    }
+  };
+
+  const jeSpravne = vybrano !== null && vybrano === otazka.correctIndex;
+  const jeSpatne = vybrano !== null && vybrano !== otazka.correctIndex;
+
+  return (
+    <section
+      className={
+        kompaktni
+          ? "rounded-2xl border border-cyan-500/20 bg-slate-900/50 p-5 sm:p-6"
+          : "mx-auto max-w-2xl rounded-2xl border border-cyan-500/25 bg-gradient-to-br from-slate-900/90 to-slate-950/90 p-6 shadow-xl shadow-cyan-950/20 sm:p-8"
+      }
+    >
+      <div className="flex flex-wrap items-end justify-between gap-3">
+        <div>
+          <h2 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
+            Procvičování
+          </h2>
+          <p className="mt-1 text-xs text-slate-400">
+            Nekonečná sada náhodných příkladů — pokaždé jiná čísla.
+          </p>
+        </div>
+        <dl className="flex gap-4 text-right text-xs text-slate-400">
+          <div>
+            <dt className="uppercase tracking-wide">Hotovo</dt>
+            <dd className="font-mono text-base text-cyan-300">{hotovo}</dd>
+          </div>
+          <div>
+            <dt className="uppercase tracking-wide">Správně</dt>
+            <dd className="font-mono text-base text-emerald-300">{spravneCelkem}</dd>
+          </div>
+          <div>
+            <dt className="uppercase tracking-wide">Serie</dt>
+            <dd className="font-mono text-base text-amber-300">{serie}</dd>
+          </div>
+          <div>
+            <dt className="uppercase tracking-wide">Rekord</dt>
+            <dd className="font-mono text-base text-fuchsia-300">{nejSerie}</dd>
+          </div>
+        </dl>
+      </div>
+
+      <div className="mt-6 rounded-xl border border-slate-700/80 bg-slate-950/60 p-4 sm:p-5">
+        <p className="text-base font-medium leading-relaxed text-slate-100 sm:text-lg">
+          {otazka.prompt}
+        </p>
+        <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          {otazka.options.map((text, i) => {
+            const stisknuto = vybrano === i;
+            const spravna = i === otazka.correctIndex;
+            let třída =
+              "rounded-xl border px-4 py-3 text-left text-sm font-medium transition ";
+            if (vybrano === null) {
+              třída +=
+                "border-slate-600 bg-slate-800/80 text-slate-100 hover:border-cyan-500/60 hover:bg-slate-800";
+            } else if (spravna) {
+              třída += stisknuto
+                ? "border-emerald-500 bg-emerald-950/50 text-emerald-100"
+                : "border-emerald-600/50 bg-emerald-950/30 text-emerald-200";
+            } else if (stisknuto) {
+              třída += "border-rose-500 bg-rose-950/40 text-rose-100";
+            } else {
+              třída += "border-slate-700 text-slate-500 opacity-60";
+            }
+            return (
+              <button
+                key={i}
+                type="button"
+                disabled={vybrano !== null}
+                onClick={() => vyber(i)}
+                className={třída}
+              >
+                {text}
+              </button>
+            );
+          })}
+        </div>
+
+        {vybrano !== null ? (
+          <div className="mt-4 space-y-3">
+            <p
+              className={`rounded-lg px-3 py-2 text-sm ${
+                jeSpravne
+                  ? "bg-emerald-950/60 text-emerald-100 ring-1 ring-emerald-500/40"
+                  : "bg-rose-950/50 text-rose-100 ring-1 ring-rose-500/40"
+              }`}
+            >
+              {jeSpravne ? "Správně. " : "Zkus to znovu — "}
+              {otazka.explanation}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <button
+                type="button"
+                onClick={dalsi}
+                className="rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-5 py-2.5 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-500/25 transition hover:brightness-110"
+              >
+                Další příklad →
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setHotovo(0);
+                  setSpravneCelkem(0);
+                  setSerie(0);
+                  setNejSerie(0);
+                  dalsi();
+                }}
+                className="rounded-full border border-slate-600 px-4 py-2 text-sm font-medium text-slate-300 hover:border-slate-500"
+              >
+                Reset statistik
+              </button>
+            </div>
+          </div>
+        ) : (
+          <p className="mt-3 text-xs text-slate-500">
+            Vyber odpověď. Po vyhodnocení dostaneš další náhodný příklad z velkého
+            poolu generátorů.
+          </p>
+        )}
+      </div>
+    </section>
+  );
+}
