@@ -172,7 +172,6 @@ function genZlomekSoucet(): ReturnType<typeof buildQuestion> {
   const b = randInt(2, 7);
   const num = a + b;
   const den = a * b;
-  const ok = `${num}/${den}`;
   const g = gcd(num, den);
   const simple = `${num / g}/${den / g}`;
   return buildQuestion(

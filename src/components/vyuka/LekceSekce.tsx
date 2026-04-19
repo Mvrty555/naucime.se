@@ -1,5 +1,6 @@
 import Link from "next/link";
-import type { Lekce } from "@/types/vyuka";
+import { useMemo } from "react";
+import type { Lekce, VyukovyKrok } from "@/types/vyuka";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
 import { getVyukoveKroky } from "@/lib/vyuka/normalizeLekce";
 import { InteraktivniCviceni } from "./InteraktivniCviceni";
@@ -13,8 +14,20 @@ type Props = {
 };
 
 export function LekceSekce({ lekce, predmet, stupe, rocnik }: Props) {
-  const kroky = getVyukoveKroky(lekce);
-  let poradiCviceni = 0;
+  const krokySPoradim = useMemo(() => {
+    const kroky = getVyukoveKroky(lekce);
+    const out: { krok: VyukovyKrok; poradi: number | null }[] = [];
+    let p = 0;
+    for (const krok of kroky) {
+      if (krok.typ === "cviceni") {
+        p += 1;
+        out.push({ krok, poradi: p });
+      } else {
+        out.push({ krok, poradi: null });
+      }
+    }
+    return out;
+  }, [lekce]);
 
   return (
     <section
@@ -32,7 +45,7 @@ export function LekceSekce({ lekce, predmet, stupe, rocnik }: Props) {
       ) : null}
 
       <div className="mt-6 space-y-8">
-        {kroky.map((krok, idx) => {
+        {krokySPoradim.map(({ krok, poradi }, idx) => {
           if (krok.typ === "text") {
             return (
               <div
@@ -62,7 +75,6 @@ export function LekceSekce({ lekce, predmet, stupe, rocnik }: Props) {
               </div>
             );
           }
-          poradiCviceni += 1;
           return (
             <div key={`c-${idx}`} className="space-y-2">
               {krok.nazev ? (
@@ -70,7 +82,10 @@ export function LekceSekce({ lekce, predmet, stupe, rocnik }: Props) {
                   {krok.nazev}
                 </p>
               ) : null}
-              <InteraktivniCviceni cviceni={krok.polozka} poradi={poradiCviceni} />
+              <InteraktivniCviceni
+                cviceni={krok.polozka}
+                poradi={poradi as number}
+              />
             </div>
           );
         })}

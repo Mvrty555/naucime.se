@@ -7,9 +7,11 @@ import type { QuestionGenerator } from "./types";
 /** Sloučí matematiku pro všechny ročníky — generátory jsou vhodné napříč ZŠ/SŠ. */
 export function getPracticePool(
   predmet: PredmetVyuka,
-  _stupe: StupeVyuka,
-  _rocnik: number,
+  stupe: StupeVyuka,
+  rocnik: number,
 ): QuestionGenerator[] {
+  void stupe;
+  void rocnik;
   switch (predmet) {
     case "matematika":
       return [...mathGenerators, ...mathGenerators, ...mathGenerators];

@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
 import { getTopicPracticePool } from "@/lib/practice/topicPools";
+import type { PracticeQuestion, QuestionGenerator } from "@/lib/practice/types";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
 
 type Props = {
@@ -16,43 +17,21 @@ type Props = {
   kompaktni?: boolean;
 };
 
-export function PracticeArena({
-  predmet,
-  stupe,
-  rocnik,
-  temaId,
-  kompaktni,
-}: Props) {
-  const topicPool = useMemo(
-    () => (temaId ? getTopicPracticePool(predmet, temaId) : []),
-    [predmet, temaId],
-  );
-  const generalPool = useMemo(
-    () => getPracticePool(predmet, stupe, rocnik),
-    [predmet, stupe, rocnik],
-  );
-  const pool = useMemo(() => {
-    if (temaId && topicPool.length > 0) return topicPool;
-    if (temaId) return [];
-    return generalPool;
-  }, [temaId, topicPool, generalPool]);
+type InnerProps = {
+  pool: QuestionGenerator[];
+  temaId: string | undefined;
+  kompaktni: boolean | undefined;
+};
 
-  const [otazka, setOtazka] = useState(() => pickRandomQuestion(pool));
+function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
+  const [otazka, setOtazka] = useState<PracticeQuestion>(() =>
+    pickRandomQuestion(pool),
+  );
   const [vybrano, setVybrano] = useState<number | null>(null);
   const [hotovo, setHotovo] = useState(0);
   const [spravneCelkem, setSpravneCelkem] = useState(0);
   const [serie, setSerie] = useState(0);
   const [nejSerie, setNejSerie] = useState(0);
-
-  useEffect(() => {
-    if (pool.length === 0) return;
-    setOtazka(pickRandomQuestion(pool));
-    setVybrano(null);
-    setHotovo(0);
-    setSpravneCelkem(0);
-    setSerie(0);
-    setNejSerie(0);
-  }, [pool]);
 
   const dalsi = useCallback(() => {
     if (pool.length === 0) return;
@@ -77,29 +56,6 @@ export function PracticeArena({
   };
 
   const jeSpravne = vybrano !== null && vybrano === otazka.correctIndex;
-  const jeSpatne = vybrano !== null && vybrano !== otazka.correctIndex;
-
-  if (temaId && pool.length === 0) {
-    return (
-      <section
-        className={
-          kompaktni
-            ? "rounded-2xl border border-amber-500/25 bg-slate-900/50 p-5"
-            : "mx-auto max-w-2xl rounded-2xl border border-amber-500/25 bg-slate-900/50 p-6 sm:p-8"
-        }
-      >
-        <p className="text-sm text-slate-300">
-          Pro vybrané téma zatím nemáme generované příklady v této podobě.
-        </p>
-        <Link
-          href="/procvicovani"
-          className="mt-3 inline-flex text-sm font-semibold text-cyan-400 hover:underline"
-        >
-          Zkusit obecné procvičování →
-        </Link>
-      </section>
-    );
-  }
 
   return (
     <section
@@ -219,5 +175,63 @@ export function PracticeArena({
         )}
       </div>
     </section>
+  );
+}
+
+export function PracticeArena({
+  predmet,
+  stupe,
+  rocnik,
+  temaId,
+  kompaktni,
+}: Props) {
+  const topicPool = useMemo(
+    () => (temaId ? getTopicPracticePool(predmet, temaId) : []),
+    [predmet, temaId],
+  );
+  const generalPool = useMemo(
+    () => getPracticePool(predmet, stupe, rocnik),
+    [predmet, stupe, rocnik],
+  );
+  const pool = useMemo(() => {
+    if (temaId && topicPool.length > 0) return topicPool;
+    if (temaId) return [];
+    return generalPool;
+  }, [temaId, topicPool, generalPool]);
+
+  const sessionKey = useMemo(
+    () => `${predmet}-${stupe}-${rocnik}-${temaId ?? "vse"}`,
+    [predmet, stupe, rocnik, temaId],
+  );
+
+  if (temaId && pool.length === 0) {
+    return (
+      <section
+        className={
+          kompaktni
+            ? "rounded-2xl border border-amber-500/25 bg-slate-900/50 p-5"
+            : "mx-auto max-w-2xl rounded-2xl border border-amber-500/25 bg-slate-900/50 p-6 sm:p-8"
+        }
+      >
+        <p className="text-sm text-slate-300">
+          Pro vybrané téma zatím nemáme generované příklady v této podobě.
+        </p>
+        <Link
+          href="/procvicovani"
+          className="mt-3 inline-flex text-sm font-semibold text-cyan-400 hover:underline"
+        >
+          Zkusit obecné procvičování →
+        </Link>
+      </section>
+    );
+  }
+
+  return (
+    <PracticeArenaSession
+      key={sessionKey}
+      pool={pool}
+      temaId={temaId}
+      kompaktni={kompaktni}
+    />
   );
 }
