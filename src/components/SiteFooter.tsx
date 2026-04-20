@@ -24,8 +24,14 @@ export function SiteFooter() {
             <Link href="/procvicovani" className="hover:text-cyan-300 hover:underline">
               Procvičování
             </Link>
+            <Link href="/doucovani" className="hover:text-cyan-300 hover:underline">
+              Doučování
+            </Link>
             <Link href="/zakladni-skola" className="hover:text-cyan-300 hover:underline">
               Mapa témat ZŠ
+            </Link>
+            <Link href="/prispevky" className="hover:text-cyan-300 hover:underline">
+              Příspěvky
             </Link>
           </div>
           <div className="flex flex-wrap justify-end gap-x-4 gap-y-2 border-t border-white/5 pt-3">

@@ -1,9 +1,11 @@
 import Link from "next/link";
+import { AuthNav } from "@/components/auth/AuthNav";
 
 /** Hlavní rozcestníky — ZŠ mapa témat je z výuky / úvodu (vyuka už pokrývá ZŠ i SŠ). */
 const nav = [
   { href: "/vyuka", label: "Výuka" },
   { href: "/procvicovani", label: "Procvičování" },
+  { href: "/doucovani", label: "Doučování" },
   { href: "/#predmety", label: "Předměty" },
 ] as const;
 
@@ -11,27 +13,33 @@ export function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 border-b border-white/5 bg-slate-950/75 backdrop-blur-xl">
       <div className="mx-auto flex h-14 max-w-5xl items-center justify-between gap-3 px-4 sm:h-16 sm:px-6">
-        <Link
-          href="/"
-          className="bg-gradient-to-r from-cyan-400 to-fuchsia-400 bg-clip-text text-base font-bold tracking-tight text-transparent sm:text-lg"
-        >
-          Naučíme.se
-        </Link>
+        <div className="flex min-w-0 flex-1 items-center gap-4">
+          <Link
+            href="/"
+            className="shrink-0 bg-gradient-to-r from-cyan-400 to-fuchsia-400 bg-clip-text text-base font-bold tracking-tight text-transparent sm:text-lg"
+          >
+            Naučíme.se
+          </Link>
 
-        <nav
-          className="hidden items-center gap-1 text-sm font-medium text-slate-400 md:flex"
-          aria-label="Hlavní navigace"
-        >
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="rounded-lg px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white"
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+          <nav
+            className="hidden min-w-0 flex-1 items-center justify-center gap-1 text-sm font-medium text-slate-400 md:flex"
+            aria-label="Hlavní navigace"
+          >
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-lg px-2.5 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white sm:px-3"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <div className="hidden shrink-0 items-center gap-2 md:flex">
+          <AuthNav />
+        </div>
 
         <details className="relative md:hidden">
           <summary
@@ -56,6 +64,9 @@ export function SiteHeader() {
                 {item.label}
               </Link>
             ))}
+            <div className="border-t border-white/10 px-4 py-3">
+              <AuthNav />
+            </div>
           </nav>
         </details>
       </div>

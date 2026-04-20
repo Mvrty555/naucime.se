@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HomeAuthCtas } from "@/components/auth/HomeAuthCtas";
 import { SubjectCard } from "@/components/SubjectCard";
 
 export default function Home() {
@@ -40,6 +41,7 @@ export default function Home() {
               Vybrat předmět
             </Link>
           </div>
+          <HomeAuthCtas />
         </div>
       </section>
 

@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
+import { AuthProvider } from "@/components/auth/Providers";
 import { SiteFooter } from "@/components/SiteFooter";
 import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
@@ -43,9 +44,11 @@ export default function RootLayout({
       <body
         className={`${outfit.className} flex min-h-full flex-col bg-slate-950 text-slate-200 antialiased`}
       >
-        <SiteHeader />
-        <main className="relative flex-1">{children}</main>
-        <SiteFooter />
+        <AuthProvider>
+          <SiteHeader />
+          <main className="relative flex-1">{children}</main>
+          <SiteFooter />
+        </AuthProvider>
       </body>
     </html>
   );

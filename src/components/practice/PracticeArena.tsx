@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+import { startTransition, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { SpojovaniJednotek } from "@/components/cviceni/SpojovaniJednotek";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
 import { getSpojovaciKonfig } from "@/lib/practice/spojovaniRegistry";
@@ -23,9 +24,19 @@ type InnerProps = {
   pool: QuestionGenerator[];
   temaId: string | undefined;
   kompaktni: boolean | undefined;
+  predmet: PredmetVyuka;
+  stupe: StupeVyuka;
+  rocnik: number;
 };
 
-function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
+function PracticeArenaSession({
+  pool,
+  temaId,
+  kompaktni,
+  predmet,
+  stupe,
+  rocnik,
+}: InnerProps) {
   /** První otázka až po mountu — `pickRandomQuestion` používá `Math.random` (jinak SSR ≠ klient). */
   const [otazka, setOtazka] = useState<PracticeQuestion | null>(() =>
     pool.length === 0 ? pickRandomQuestion(pool) : null,
@@ -35,6 +46,8 @@ function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
   const [spravneCelkem, setSpravneCelkem] = useState(0);
   const [serie, setSerie] = useState(0);
   const [nejSerie, setNejSerie] = useState(0);
+  const { data: session, status } = useSession();
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (pool.length === 0) return;
@@ -43,6 +56,37 @@ function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
       setVybrano(null);
     });
   }, [pool]);
+
+  useEffect(() => {
+    if (status !== "authenticated" || !session?.user?.id || pool.length === 0) {
+      return;
+    }
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      const scope = `arena:${predmet}:${stupe}:${rocnik}:${temaId ?? "vse"}`;
+      const data = { hotovo, spravneCelkem, serie, nejSerie };
+      void fetch("/api/progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scope, data }),
+      });
+    }, 900);
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+    };
+  }, [
+    hotovo,
+    spravneCelkem,
+    serie,
+    nejSerie,
+    predmet,
+    stupe,
+    rocnik,
+    temaId,
+    pool.length,
+    session?.user?.id,
+    status,
+  ]);
 
   const dalsi = useCallback(() => {
     if (pool.length === 0) return;
@@ -152,6 +196,11 @@ function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
           </div>
         </dl>
       </div>
+      {status === "authenticated" ? (
+        <p className="mt-2 text-xs text-emerald-400/90">
+          Jsi přihlášen — statistiky arény se průběžně ukládají na účet.
+        </p>
+      ) : null}
 
       <div className="mt-6 rounded-xl border border-slate-700/80 bg-slate-950/60 p-4 sm:p-5">
         <p className="text-base font-medium leading-relaxed text-slate-100 sm:text-lg">
@@ -307,6 +356,9 @@ export function PracticeArena({
         pool={pool}
         temaId={temaId}
         kompaktni={kompaktni}
+        predmet={predmet}
+        stupe={stupe}
+        rocnik={rocnik}
       />
     </div>
   );
