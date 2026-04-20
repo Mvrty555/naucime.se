@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TeorieClankyList } from "@/components/teorie/TeorieClankyList";
 import { fyzikaTeorieClanky } from "@/data/teorie/fyzika-teorie";
 
 export const metadata: Metadata = {
@@ -29,22 +30,12 @@ export default function FyzikaTeorieHubPage() {
         omylech — učení funguje líp, když víš, kde většina lidí zakopne.
       </p>
 
-      <ul className="mt-10 space-y-3">
-        {fyzikaTeorieClanky.map((c) => (
-          <li key={c.id}>
-            <Link
-              href={`/fyzika/teorie/${c.id}`}
-              className="block rounded-2xl border border-white/10 bg-slate-900/50 p-5 transition hover:border-cyan-500/35 hover:bg-slate-900/80"
-            >
-              <span className="font-semibold text-white">{c.nazev}</span>
-              <p className="mt-2 text-sm text-slate-400">{c.perex}</p>
-              <span className="mt-3 inline-block text-sm font-medium text-cyan-400">
-                Číst teorii →
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <TeorieClankyList
+        clanky={fyzikaTeorieClanky}
+        basePath="/fyzika/teorie"
+        accent="fuchsia"
+        className="mt-10 space-y-3"
+      />
     </div>
   );
 }

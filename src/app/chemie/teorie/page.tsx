@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TeorieClankyList } from "@/components/teorie/TeorieClankyList";
 import { chemieTeorieClanky } from "@/data/teorie/chemie-teorie";
 
 export const metadata: Metadata = {
@@ -28,22 +29,12 @@ export default function ChemieTeorieHubPage() {
         U každého tématu je prostor pro aktivitu a typické záměny.
       </p>
 
-      <ul className="mt-10 space-y-3">
-        {chemieTeorieClanky.map((c) => (
-          <li key={c.id}>
-            <Link
-              href={`/chemie/teorie/${c.id}`}
-              className="block rounded-2xl border border-white/10 bg-slate-900/50 p-5 transition hover:border-emerald-500/35 hover:bg-slate-900/80"
-            >
-              <span className="font-semibold text-white">{c.nazev}</span>
-              <p className="mt-2 text-sm text-slate-400">{c.perex}</p>
-              <span className="mt-3 inline-block text-sm font-medium text-emerald-400">
-                Číst teorii →
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ul>
+      <TeorieClankyList
+        clanky={chemieTeorieClanky}
+        basePath="/chemie/teorie"
+        accent="emerald"
+        className="mt-10 space-y-3"
+      />
     </div>
   );
 }

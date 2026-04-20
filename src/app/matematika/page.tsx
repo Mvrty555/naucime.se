@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TeorieClankyList } from "@/components/teorie/TeorieClankyList";
+import { matematikaTeorieClanky } from "@/data/teorie/matematika-teorie";
 
 export const metadata: Metadata = {
   title: "Matematika",
   description:
-    "Matematika pro ZŠ a SŠ — témata, vysvětlení a cvičení. Obsah postupně doplňujeme.",
+    "Matematika pro ZŠ a SŠ — teoretické lekce (poměry, procenta, lineární funkce), výuka po ročnících a procvičování.",
 };
 
 export default function MatematikaPage() {
@@ -53,14 +55,42 @@ export default function MatematikaPage() {
           Mapa témat 5.–9. třída →
         </Link>
       </div>
-      <div className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
-        <h2 className="text-lg font-semibold text-white">Obsah připravujeme</h2>
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-white">Teoretické lekce</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Jednotlivá témata, stránky s výkladem a generátory úloh budeme přidávat
-          postupně. Tato stránka je výchozí rozcestník pro celou matematiku na
-          Naučíme.se.
+          Každá kapitola má perex, strukturované pojmy a vysvětlení „proč to tak je“.
+          Kompletní rozcestník s úvodem je na stránce{" "}
+          <Link href="/matematika/teorie" className="font-medium text-cyan-400 hover:underline">
+            Teoretické minimum — matematika
+          </Link>
+          .
         </p>
-      </div>
+        <TeorieClankyList
+          clanky={matematikaTeorieClanky}
+          basePath="/matematika/teorie"
+          accent="cyan"
+          className="mt-6 space-y-3"
+        />
+      </section>
+
+      <section className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
+        <h2 className="text-lg font-semibold text-white">Články a výuka po ročnících</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-400">
+          U prvního stupně druhého stupně máme samostatnou kapitolu{" "}
+          <Link href="/matematika/zs/poradi-operaci" className="text-cyan-400 hover:underline">
+            Pořadí operací
+          </Link>
+          . Interaktivní úlohy podle učebních témat jsou ve{" "}
+          <Link href="/vyuka/matematika/zs/5" className="text-cyan-400 hover:underline">
+            výuce podle ročníku
+          </Link>{" "}
+          a v obecném{" "}
+          <Link href="/procvicovani" className="text-fuchsia-400 hover:underline">
+            procvičování
+          </Link>
+          .
+        </p>
+      </section>
     </div>
   );
 }

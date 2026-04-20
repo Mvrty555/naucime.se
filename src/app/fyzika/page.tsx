@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { TeorieClankyList } from "@/components/teorie/TeorieClankyList";
+import { fyzikaTeorieClanky } from "@/data/teorie/fyzika-teorie";
 
 export const metadata: Metadata = {
   title: "Fyzika",
   description:
-    "Fyzika pro ZŠ a SŠ — témata, vysvětlení a cvičení. Obsah postupně doplňujeme.",
+    "Fyzika pro ZŠ a SŠ — teoretické lekce (rychlost, síla, energie…), výuka po ročnících a procvičování.",
 };
 
 export default function FyzikaPage() {
@@ -53,13 +55,38 @@ export default function FyzikaPage() {
           Mapa témat 5.–9. třída →
         </Link>
       </div>
-      <div className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
-        <h2 className="text-lg font-semibold text-white">Další obsah</h2>
+      <section className="mt-10">
+        <h2 className="text-lg font-semibold text-white">Teoretické lekce</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Rozšiřujeme výuku po ročnících, ilustrace a další kapitoly teorie. Začni u
-          odkazu „Teoretické minimum“ — je to samostatná větev webu vedle procvičování.
+          Veličiny, jednotky SI, vzorce a časté omyly — u každého tématu je i aktivita a
+          sekce „kde většina zakopne“. Úvodní text a stejný seznam najdeš i pod{" "}
+          <Link href="/fyzika/teorie" className="font-medium text-cyan-400 hover:underline">
+            Teoretické minimum — fyzika
+          </Link>
+          .
         </p>
-      </div>
+        <TeorieClankyList
+          clanky={fyzikaTeorieClanky}
+          basePath="/fyzika/teorie"
+          accent="fuchsia"
+          className="mt-6 space-y-3"
+        />
+      </section>
+
+      <section className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
+        <h2 className="text-lg font-semibold text-white">Výuka a procvičování</h2>
+        <p className="mt-2 text-sm leading-relaxed text-slate-400">
+          Kapitoly podle ročníku (ZŠ i SŠ) s postupem a úlohami začínají například u{" "}
+          <Link href="/vyuka/fyzika/zs/5" className="text-cyan-400 hover:underline">
+            fyziky pro 5. třídu
+          </Link>
+          . Náhodné generované příklady jsou v{" "}
+          <Link href="/procvicovani" className="text-fuchsia-400 hover:underline">
+            procvičování
+          </Link>
+          ; u vybraných témat je i spojovačka pojmů.
+        </p>
+      </section>
     </div>
   );
 }
