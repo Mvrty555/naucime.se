@@ -29,39 +29,12 @@ export default function FyzikaPage() {
         moderní fyziky — vždy s důrazem na intuici, jednotky a souvislosti mezi
         pojmy.
       </p>
-      <div className="mt-6 flex flex-wrap gap-4 text-sm">
-        <Link
-          href="/fyzika/teorie"
-          className="font-semibold text-cyan-400 hover:text-cyan-300 hover:underline"
-        >
-          Teoretické minimum (veličiny, vzorce, proč) →
-        </Link>
-        <Link
-          href="/procvicovani"
-          className="font-semibold text-fuchsia-400 hover:text-fuchsia-300 hover:underline"
-        >
-          Procvičování →
-        </Link>
-        <Link
-          href="/vyuka/fyzika/zs/5"
-          className="font-medium text-cyan-400 hover:underline"
-        >
-          Výuka po ročnících (ZŠ + SŠ) →
-        </Link>
-        <Link
-          href="/zakladni-skola#fyzika"
-          className="font-medium text-slate-500 hover:text-slate-300 hover:underline"
-        >
-          Mapa témat 5.–9. třída →
-        </Link>
-      </div>
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-white">Teoretické lekce</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Veličiny, jednotky SI, vzorce a časté omyly — u každého tématu je i aktivita a
-          sekce „kde většina zakopne“. Úvodní text a stejný seznam najdeš i pod{" "}
+          Veličiny, jednotky SI, vzorce a časté omyly. Společný úvod ke všem kapitolám:{" "}
           <Link href="/fyzika/teorie" className="font-medium text-cyan-400 hover:underline">
-            Teoretické minimum — fyzika
+            Teoretické minimum
           </Link>
           .
         </p>
@@ -73,20 +46,19 @@ export default function FyzikaPage() {
         />
       </section>
 
-      <section className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
-        <h2 className="text-lg font-semibold text-white">Výuka a procvičování</h2>
-        <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Kapitoly podle ročníku (ZŠ i SŠ) s postupem a úlohami začínají například u{" "}
-          <Link href="/vyuka/fyzika/zs/5" className="text-cyan-400 hover:underline">
-            fyziky pro 5. třídu
-          </Link>
-          . Náhodné generované příklady jsou v{" "}
-          <Link href="/procvicovani" className="text-fuchsia-400 hover:underline">
-            procvičování
-          </Link>
-          ; u vybraných témat je i spojovačka pojmů.
-        </p>
-      </section>
+      <p className="mt-10 text-sm text-slate-500">
+        <Link href="/vyuka/fyzika/zs/5" className="text-cyan-400 hover:underline">
+          Výuka podle ročníku
+        </Link>
+        {" · "}
+        <Link href="/procvicovani" className="text-fuchsia-400 hover:underline">
+          Procvičování
+        </Link>
+        {" · "}
+        <Link href="/zakladni-skola#fyzika" className="text-slate-400 hover:text-slate-300 hover:underline">
+          Mapa témat ZŠ
+        </Link>
+      </p>
     </div>
   );
 }

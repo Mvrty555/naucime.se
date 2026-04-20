@@ -25,25 +25,19 @@ export default function Home() {
               href="/procvicovani"
               className="inline-flex min-h-11 min-w-[10rem] items-center justify-center rounded-full bg-gradient-to-r from-cyan-500 to-sky-500 px-6 text-sm font-bold text-slate-950 shadow-lg shadow-cyan-500/25 transition hover:brightness-110 active:scale-[0.98] motion-reduce:active:scale-100"
             >
-              Neomezené procvičování
+              Procvičování
             </Link>
             <Link
               href="/vyuka"
               className="inline-flex min-h-11 min-w-[10rem] items-center justify-center rounded-full border border-white/15 bg-white/5 px-6 text-sm font-semibold text-white backdrop-blur transition hover:border-cyan-500/40 hover:bg-white/10"
             >
-              Výuka po ročnících
-            </Link>
-            <Link
-              href="/matematika"
-              className="inline-flex min-h-11 items-center justify-center rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 px-6 text-sm font-semibold text-fuchsia-100 transition hover:bg-fuchsia-500/20"
-            >
-              Začít matematikou
+              Výuka podle ročníku
             </Link>
             <Link
               href="/#predmety"
-              className="inline-flex min-h-11 items-center justify-center rounded-full px-6 text-sm font-medium text-slate-400 transition hover:text-white"
+              className="inline-flex min-h-11 items-center justify-center rounded-full border border-fuchsia-500/30 bg-fuchsia-500/10 px-6 text-sm font-semibold text-fuchsia-100 transition hover:bg-fuchsia-500/20"
             >
-              Předměty ↓
+              Vybrat předmět
             </Link>
           </div>
         </div>
@@ -76,8 +70,7 @@ export default function Home() {
           Předměty
         </h2>
         <p className="mt-2 max-w-2xl text-slate-400">
-          Každá sekce spojuje témata, výklad a procvičení — dál přidáváme hloubku i
-          typy úloh.
+          U každého předmětu najdeš teoretické lekce, výuku po třídách a procvičování.
         </p>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
           <SubjectCard
@@ -112,11 +105,9 @@ export default function Home() {
           <ul className="mt-8 grid gap-4 sm:grid-cols-2">
             {[
               "Výuka po ročnících (ZŠ 5–9, SŠ 1–4)",
-              "Teoretické minimum — veličiny, jednotky, vzorce a „proč“",
-              "Generované příklady bez konce",
-              "Textové lekce s drobnými úlohami",
-              "Mapa témat podle školy",
-              "Pravidla pro férový obsah (žádné kopírování)",
+              "Teoretické minimum — lekce podle předmětu",
+              "Procvičování včetně úloh jen k vybrané kapitole",
+              "Mapa témat druhého stupně ZŠ",
             ].map((item) => (
               <li
                 key={item}
@@ -139,23 +130,14 @@ export default function Home() {
         <h2 className="text-2xl font-semibold tracking-tight text-white sm:text-3xl">
           O projektu
         </h2>
-        <div className="mt-6 max-w-3xl space-y-4 leading-relaxed text-slate-400">
-          <p>
-            Naučíme.se doplňuje školní výuku materiály na čtení doma, opakování
-            vlastním tempem a okamžité ověření u procvičování.
-          </p>
-          <p>
-            Obsah vzniká podle{" "}
-            <code className="rounded-md bg-white/10 px-1.5 py-0.5 text-sm text-slate-200">
-              AGENTS.md
-            </code>{" "}
-            a Cursor pravidel. Témata ZŠ jsou v{" "}
-            <Link href="/zakladni-skola" className="font-medium text-cyan-400 hover:underline">
-              přehledu základní školy
-            </Link>
-            .
-          </p>
-        </div>
+        <p className="mt-6 max-w-3xl leading-relaxed text-slate-400">
+          Materiály na čtení doma, opakování vlastním tempem a okamžitou zpětnou vazbou
+          u procvičování.           Přehled témat 5.–9. třídy je v{" "}
+          <Link href="/zakladni-skola" className="font-medium text-cyan-400 hover:underline">
+            mapě témat ZŠ
+          </Link>
+          .
+        </p>
       </section>
     </div>
   );

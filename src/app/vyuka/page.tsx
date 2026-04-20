@@ -39,6 +39,13 @@ export default function VyukaHubPage() {
           kapitoly je zvlášť generované procvičení jen k danému tématu; obecný mix je
           na stránce <Link href="/procvicovani" className="text-cyan-400 hover:underline">procvičování</Link>.
         </p>
+        <p className="mt-3 max-w-3xl text-sm leading-relaxed text-slate-500">
+          Samostatný orientační přehled témat 5.–9. třídy (bez lekcí) je v{" "}
+          <Link href="/zakladni-skola" className="font-medium text-cyan-400 hover:underline">
+            mapě témat ZŠ
+          </Link>
+          .
+        </p>
       </div>
 
       <div className="relative mx-auto max-w-5xl space-y-10 px-4 pb-20 sm:px-6">
@@ -75,19 +82,6 @@ export default function VyukaHubPage() {
             </div>
           </section>
         ))}
-      </div>
-
-      <div className="relative mx-auto max-w-5xl px-4 pb-16 sm:px-6">
-        <p className="text-sm text-slate-500">
-          Starší rozcestník kapitoly „Pořadí operací“ zůstává na{" "}
-          <Link
-            href="/matematika/zs/poradi-operaci"
-            className="font-medium text-cyan-400 hover:underline"
-          >
-            /matematika/zs/poradi-operaci
-          </Link>
-          .
-        </p>
       </div>
     </div>
   );

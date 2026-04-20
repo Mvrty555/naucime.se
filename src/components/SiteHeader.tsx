@@ -1,13 +1,10 @@
 import Link from "next/link";
 
+/** Hlavní rozcestníky — ZŠ mapa témat je z výuky / úvodu (vyuka už pokrývá ZŠ i SŠ). */
 const nav = [
-  { href: "/procvicovani", label: "Procvičování" },
   { href: "/vyuka", label: "Výuka" },
-  { href: "/zakladni-skola", label: "ZŠ" },
-  { href: "/matematika", label: "Matematika" },
-  { href: "/fyzika", label: "Fyzika" },
-  { href: "/chemie", label: "Chemie" },
-  { href: "/#o-projektu", label: "O projektu" },
+  { href: "/procvicovani", label: "Procvičování" },
+  { href: "/#predmety", label: "Předměty" },
 ] as const;
 
 export function SiteHeader() {
@@ -22,21 +19,21 @@ export function SiteHeader() {
         </Link>
 
         <nav
-          className="hidden items-center gap-0.5 text-sm font-medium text-slate-400 lg:flex lg:gap-1"
+          className="hidden items-center gap-1 text-sm font-medium text-slate-400 md:flex"
           aria-label="Hlavní navigace"
         >
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-2.5 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white lg:px-3"
+              className="rounded-lg px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white"
             >
               {item.label}
             </Link>
           ))}
         </nav>
 
-        <details className="relative lg:hidden">
+        <details className="relative md:hidden">
           <summary
             className="flex cursor-pointer list-none items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-sm font-medium text-slate-200 shadow-inner shadow-white/5 [&::-webkit-details-marker]:hidden"
             aria-label="Otevřít menu"
@@ -47,7 +44,7 @@ export function SiteHeader() {
             </span>
           </summary>
           <nav
-            className="absolute right-0 mt-2 w-56 overflow-hidden rounded-xl border border-white/10 bg-slate-900/95 py-1 shadow-2xl shadow-black/40 ring-1 ring-cyan-500/10 backdrop-blur-xl"
+            className="absolute right-0 mt-2 w-52 overflow-hidden rounded-xl border border-white/10 bg-slate-900/95 py-1 shadow-2xl shadow-black/40 ring-1 ring-cyan-500/10 backdrop-blur-xl"
             aria-label="Mobilní navigace"
           >
             {nav.map((item) => (

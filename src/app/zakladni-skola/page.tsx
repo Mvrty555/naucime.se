@@ -26,9 +26,8 @@ export default function ZakladniSkolaPage() {
           Základní škola
         </h1>
         <p className="mt-4 max-w-3xl text-lg leading-relaxed text-slate-400">
-          Orientační mapa témat pro 5.–9. třídu — vlastní struktura pro Naučíme.se,
-          kterou postupně rozšiřujeme o výklady a cvičení. Slouží jako rozcestník,
-          ne jako doslovná kopie konkrétní učebnice.
+          Orientační přehled témat 5.–9. třídy — rozcestník k výuce a článkům, ne doslovná
+          kopie jedné učebnice.
         </p>
       </div>
 

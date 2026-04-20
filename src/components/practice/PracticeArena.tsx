@@ -39,14 +39,14 @@ function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
   useEffect(() => {
     if (pool.length === 0) return;
     startTransition(() => {
-      setOtazka(pickRandomQuestion(pool));
+      setOtazka(pickRandomQuestion(pool, null));
       setVybrano(null);
     });
   }, [pool]);
 
   const dalsi = useCallback(() => {
     if (pool.length === 0) return;
-    setOtazka(pickRandomQuestion(pool));
+    setOtazka((prev) => pickRandomQuestion(pool, prev));
     setVybrano(null);
   }, [pool]);
 

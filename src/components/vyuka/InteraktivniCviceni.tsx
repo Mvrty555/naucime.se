@@ -11,9 +11,12 @@ type Props = {
 export function InteraktivniCviceni({ cviceni, poradi }: Props) {
   const baseId = useId();
   const [stav, setStav] = useState<"volba" | "spravne" | "spatne">("volba");
+  /** Obnoví rádia (nekontrolované inputy jinak drží starý výběr po „Znovu“). */
+  const [kolo, setKolo] = useState(0);
 
   const reset = useCallback(() => {
     setStav("volba");
+    setKolo((k) => k + 1);
   }, []);
 
   if (cviceni.typ === "ano-ne") {
@@ -69,14 +72,17 @@ export function InteraktivniCviceni({ cviceni, poradi }: Props) {
   const { otazka, moznosti, spravnyIndex, vysvetleni } = cviceni;
 
   return (
-    <fieldset className="rounded-xl border border-white/10 bg-slate-950/50 p-4">
+    <fieldset
+      key={`${baseId}-kolo-${kolo}`}
+      className="rounded-xl border border-white/10 bg-slate-950/50 p-4"
+    >
       <legend className="text-sm font-medium text-slate-500">
         Úloha {poradi}
       </legend>
       <p className="mt-1 text-slate-100">{otazka}</p>
       <div className="mt-3 space-y-2">
         {moznosti.map((moznost, i) => {
-          const inputId = `${baseId}-${i}`;
+          const inputId = `${baseId}-${kolo}-${i}`;
           const disabled = stav !== "volba";
           return (
             <label
@@ -87,7 +93,7 @@ export function InteraktivniCviceni({ cviceni, poradi }: Props) {
               <input
                 id={inputId}
                 type="radio"
-                name={baseId}
+                name={`${baseId}-${kolo}`}
                 disabled={disabled}
                 className="mt-1 border-slate-600 bg-slate-800 text-cyan-500 focus:ring-cyan-500"
                 onChange={() => {
@@ -101,7 +107,16 @@ export function InteraktivniCviceni({ cviceni, poradi }: Props) {
         })}
       </div>
       {stav === "spravne" ? (
-        <p className="mt-3 text-sm text-emerald-300">{vysvetleni}</p>
+        <div className="mt-3 space-y-2">
+          <p className="text-sm text-emerald-300">{vysvetleni}</p>
+          <button
+            type="button"
+            onClick={reset}
+            className="text-sm font-medium text-cyan-400 hover:text-cyan-300 hover:underline"
+          >
+            Znovu od začátku
+          </button>
+        </div>
       ) : null}
       {stav === "spatne" ? (
         <div className="mt-3 space-y-2">

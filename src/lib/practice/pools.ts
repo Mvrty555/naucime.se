@@ -24,8 +24,21 @@ export function getPracticePool(
   }
 }
 
+function isSameQuestion(
+  a: ReturnType<QuestionGenerator>,
+  b: ReturnType<QuestionGenerator>,
+): boolean {
+  if (a.prompt !== b.prompt) return false;
+  return a.options.every((o, i) => o === b.options[i]);
+}
+
+/**
+ * Náhodná otázka z poolu. Pokud je `predchozi` uvedená, snaží se vygenerovat jinou
+ * (stejný text i možnosti působí jako „nic se nezměnilo“ — typické u statických chem. otázek).
+ */
 export function pickRandomQuestion(
   pool: QuestionGenerator[],
+  predchozi?: ReturnType<QuestionGenerator> | null,
 ): ReturnType<QuestionGenerator> {
   if (pool.length === 0) {
     return {
@@ -35,6 +48,12 @@ export function pickRandomQuestion(
       explanation: "Zkus jiné téma nebo obecné procvičování bez filtru.",
     };
   }
-  const gen = pool[Math.floor(Math.random() * pool.length)];
-  return gen();
+  if (pool.length === 1 || !predchozi) {
+    return pool[Math.floor(Math.random() * pool.length)]();
+  }
+  let q = pool[Math.floor(Math.random() * pool.length)]();
+  for (let n = 0; n < 40 && isSameQuestion(q, predchozi); n += 1) {
+    q = pool[Math.floor(Math.random() * pool.length)]();
+  }
+  return q;
 }

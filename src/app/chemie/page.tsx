@@ -29,39 +29,12 @@ export default function ChemiePage() {
         organické chemie — srozumitelně pro studenty, kteří chtějí pochopit „proč“,
         ne jen nazpamovat.
       </p>
-      <div className="mt-6 flex flex-wrap gap-4 text-sm">
-        <Link
-          href="/chemie/teorie"
-          className="font-semibold text-emerald-400 hover:text-emerald-300 hover:underline"
-        >
-          Teoretické minimum →
-        </Link>
-        <Link
-          href="/procvicovani"
-          className="font-semibold text-fuchsia-400 hover:text-fuchsia-300 hover:underline"
-        >
-          Procvičování →
-        </Link>
-        <Link
-          href="/vyuka/chemie/zs/5"
-          className="font-medium text-cyan-400 hover:underline"
-        >
-          Výuka po ročnících (ZŠ + SŠ) →
-        </Link>
-        <Link
-          href="/zakladni-skola#chemie"
-          className="font-medium text-slate-500 hover:text-slate-300 hover:underline"
-        >
-          Mapa témat 5.–9. třída →
-        </Link>
-      </div>
       <section className="mt-10">
         <h2 className="text-lg font-semibold text-white">Teoretické lekce</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Mol, látkové množství a koncentrace v souvislostech — stejný přehled jako na
-          stránce{" "}
+          Mol, látkové množství a koncentrace v souvislostech. Společný úvod:{" "}
           <Link href="/chemie/teorie" className="font-medium text-emerald-400 hover:underline">
-            Teoretické minimum — chemie
+            Teoretické minimum
           </Link>
           .
         </p>
@@ -73,20 +46,19 @@ export default function ChemiePage() {
         />
       </section>
 
-      <section className="mt-10 rounded-2xl border border-white/10 bg-slate-900/50 p-6">
-        <h2 className="text-lg font-semibold text-white">Výuka a procvičování</h2>
-        <p className="mt-2 text-sm leading-relaxed text-slate-400">
-          Témata podle ročníku (směsi, periodická soustava, rovnice…) najdeš ve{" "}
-          <Link href="/vyuka/chemie/zs/5" className="text-emerald-400 hover:underline">
-            výuce chemie
-          </Link>
-          . Procvičování včetně spojovaček u kapitol je v{" "}
-          <Link href="/procvicovani" className="text-fuchsia-400 hover:underline">
-            tréninku
-          </Link>
-          .
-        </p>
-      </section>
+      <p className="mt-10 text-sm text-slate-500">
+        <Link href="/vyuka/chemie/zs/5" className="text-emerald-400 hover:underline">
+          Výuka podle ročníku
+        </Link>
+        {" · "}
+        <Link href="/procvicovani" className="text-fuchsia-400 hover:underline">
+          Procvičování
+        </Link>
+        {" · "}
+        <Link href="/zakladni-skola#chemie" className="text-slate-400 hover:text-slate-300 hover:underline">
+          Mapa témat ZŠ
+        </Link>
+      </p>
     </div>
   );
 }

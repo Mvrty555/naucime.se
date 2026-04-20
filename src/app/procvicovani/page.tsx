@@ -81,17 +81,11 @@ function ProcvicovaniContent() {
         <h1 className="mt-2 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
           Procvičování
         </h1>
-        <p className="mt-4 text-slate-400">
-          <strong className="text-slate-200">Obecný mix</strong> náhodně střídá typy
-          úloh z celého předmětu. <strong className="text-slate-200">Téma z výuky</strong>{" "}
-          drží generátory u konkrétní kapitoly — stejná logika jako pod lekcí na stránkách
-          ročníku.
-        </p>
-        <p className="mt-3 text-xs text-slate-500">
-          U vybraného <strong className="text-slate-300">tématu z výuky</strong> se často
-          zobrazí i <strong className="text-slate-300">spojovačka</strong> (propojení
-          dvou sloupců čarami) vedle generovaných příkladů — u fyziky, chemie i matematiky
-          podle kapitoly.
+        <p className="mt-4 text-sm leading-relaxed text-slate-400">
+          <strong className="text-slate-200">Obecný mix</strong> střídá náhodně typy úloh
+          z celého předmětu. <strong className="text-slate-200">Téma z výuky</strong> drží
+          generátory u jedné kapitoly (jako pod lekcí v ročníku); u některých témat se
+          vedle příkladů objeví i spojovačka pojmů.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -215,12 +209,6 @@ function ProcvicovaniContent() {
           rocnik={rocnik}
           temaId={temaId ?? undefined}
         />
-        <p className="mt-8 text-center text-xs text-slate-500">
-          Didaktika: u náročnějších látek dává smysl střídat krátký výklad, jednu
-          kontrolní úlohu a teprve pak další výklad — přesně tak jsou stavěné nové
-          lekce s polem <code className="text-slate-400">postup</code> ve výukových
-          datech.
-        </p>
       </div>
     </div>
   );
