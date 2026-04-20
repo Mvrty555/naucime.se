@@ -88,9 +88,10 @@ function ProcvicovaniContent() {
           ročníku.
         </p>
         <p className="mt-3 text-xs text-slate-500">
-          U fyziky v 5. třídě zvol lekci{" "}
-          <strong className="text-slate-300">Měření a jednotky SI</strong> — zobrazí se
-          interaktivní spojovačka pojmů a symbolů jednotek (s čárami) i klasické příklady.
+          U vybraného <strong className="text-slate-300">tématu z výuky</strong> se často
+          zobrazí i <strong className="text-slate-300">spojovačka</strong> (propojení
+          dvou sloupců čarami) vedle generovaných příkladů — u fyziky, chemie i matematiky
+          podle kapitoly.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">

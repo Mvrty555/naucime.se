@@ -7,7 +7,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { jednotkySpojovaciPary } from "@/data/cviceni/jednotkySpojovani";
+import type { SpojovaciTemaKonfig } from "@/data/cviceni/spojovaciTemaData";
 
 /** Deterministické míchání — stejný výsledek na serveru i v prohlížeči (bez hydration mismatch). */
 function mulberry32(seed: number) {
@@ -59,11 +59,26 @@ function anchor(
 }
 
 type Props = {
+  konfig: SpojovaciTemaKonfig;
   /** Menší okraje k vložení do karty procvičování */
   kompaktni?: boolean;
 };
 
-export function SpojovaniJednotek({ kompaktni }: Props) {
+export function SpojovaniJednotek({ konfig, kompaktni }: Props) {
+  const { pary } = konfig;
+  const levyNadpis = konfig.levyNadpis ?? "Pojem";
+  const pravyNadpis = konfig.pravyNadpis ?? "Jednotka (symbol)";
+  const nadpisHry = konfig.nadpisHry ?? "Spojovačka";
+  const podnadpisHry =
+    konfig.podnadpisHry ??
+    "Vyber položku vlevo, pak správnou odpověď vpravo — u správných párů se nakreslí čára.";
+  const hotovoDoplneni =
+    konfig.hotovoDoplneni ??
+    "Zkus ještě generované příklady níže — stejné téma, jiná čísla.";
+  const tipBehemHry =
+    konfig.tipBehemHry ??
+    "Nejdřív si přečti lekci v /vyuka, pak spojuj z paměti, ne náhodně.";
+  const pravyMono = konfig.pravyMonospace !== false;
   const [hraSeed, setHraSeed] = useState(0);
   const [vybranyPojemId, setVybranyPojemId] = useState<string | null>(null);
   const [spojeno, setSpojeno] = useState<Set<string>>(() => new Set());
@@ -75,25 +90,22 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
   const pojemBtnRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const jednotkaBtnRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
-  const mapa = useMemo(
-    () => new Map(jednotkySpojovaciPary.map((p) => [p.id, p] as const)),
-    [],
-  );
+  const mapa = useMemo(() => new Map(pary.map((p) => [p.id, p] as const)), [pary]);
   const pojmyRadka = useMemo(
     () =>
       shuffleSeeded(
-        jednotkySpojovaciPary.map((p) => ({ id: p.id, text: p.pojem })),
+        pary.map((p) => ({ id: p.id, text: p.pojem })),
         (hraSeed + 0x51ed) >>> 0,
       ),
-    [hraSeed],
+    [hraSeed, pary],
   );
   const jednotkyRadka = useMemo(
     () =>
       shuffleSeeded(
-        jednotkySpojovaciPary.map((p) => ({ id: p.id, text: p.jednotkaZnak })),
+        pary.map((p) => ({ id: p.id, text: p.jednotkaZnak })),
         (hraSeed + 0xc001) >>> 0,
       ),
-    [hraSeed],
+    [hraSeed, pary],
   );
 
   const [linkSvg, setLinkSvg] = useState<{
@@ -110,7 +122,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
     setPreviewEnd(null);
   }, []);
 
-  const hotovo = spojeno.size === jednotkySpojovaciPary.length;
+  const hotovo = spojeno.size === pary.length;
 
   const syncLines = useCallback(() => {
     const board = boardRef.current;
@@ -190,7 +202,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
   const klikJednotka = (id: string) => {
     if (spojeno.has(id)) return;
     if (vybranyPojemId === null) {
-      setChyba("Nejdřív vyber pojem v levém sloupci, pak klikni na jednotku vpravo.");
+      setChyba("Nejdřív vyber položku v levém sloupci, pak klikni na správnou odpověď vpravo.");
       return;
     }
     if (vybranyPojemId === id) {
@@ -201,7 +213,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
       setPreviewEnd(null);
       setPosledniVysvetleni(par?.vysvetleni ?? null);
     } else {
-      setChyba("Tahle jednotka k vybranému pojmu nepatří. Zkus jinou.");
+      setChyba("Tato odpověď k vybrané položce nepatří. Zkus jinou.");
       setVybranyPojemId(null);
       setPreviewEnd(null);
     }
@@ -215,19 +227,13 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
     <div className={wrap}>
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h3 className="text-base font-semibold text-white sm:text-lg">
-            Spojovačka: pojem ↔ jednotka
-          </h3>
-          <p className="mt-1 text-xs text-slate-400 sm:text-sm">
-            Vyber <strong className="text-slate-200">pojem</strong>, pak{" "}
-            <strong className="text-slate-200">správný symbol</strong> — mezi správnými
-            páry se nakreslí čára.
-          </p>
+          <h3 className="text-base font-semibold text-white sm:text-lg">{nadpisHry}</h3>
+          <p className="mt-1 text-xs text-slate-400 sm:text-sm">{podnadpisHry}</p>
         </div>
         <div className="text-right text-xs text-slate-400 sm:text-sm">
           Spojeno:{" "}
           <span className="font-mono text-fuchsia-300">
-            {spojeno.size}/{jednotkySpojovaciPary.length}
+            {spojeno.size}/{pary.length}
           </span>
         </div>
       </div>
@@ -241,7 +247,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
         <div className="relative z-20 grid gap-8 sm:grid-cols-2 sm:gap-x-20 sm:gap-y-4">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Pojem
+              {levyNadpis}
             </p>
             <ul className="mt-3 space-y-4 sm:space-y-5">
               {pojmyRadka.map(({ id, text }) => {
@@ -275,7 +281,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
           </div>
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-slate-500">
-              Jednotka (symbol)
+              {pravyNadpis}
             </p>
             <ul className="mt-3 space-y-4 sm:space-y-5">
               {jednotkyRadka.map(({ id, text }) => {
@@ -290,7 +296,9 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
                       }}
                       disabled={done || hotovo}
                       onClick={() => klikJednotka(id)}
-                      className={`w-full rounded-xl border px-3 py-3 text-left font-mono text-sm transition disabled:cursor-default disabled:opacity-55 ${
+                      className={`w-full rounded-xl border px-3 py-3 text-left text-sm transition disabled:cursor-default disabled:opacity-55 ${
+                        pravyMono ? "font-mono " : ""
+                      }${
                         done
                           ? "border-emerald-500/50 bg-emerald-950/30 text-emerald-100"
                           : "border-white/10 bg-slate-900/60 text-fuchsia-100 hover:border-fuchsia-500/40"
@@ -350,10 +358,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
           <p className="text-sm font-semibold text-cyan-100 sm:text-base">
             Hotovo — všechny páry sedí.
           </p>
-          <p className="mt-2 text-xs text-slate-400 sm:text-sm">
-            Watt není totéž co joule: watt měří „rychlost“ přenosu energie, joule „kolik“ jí
-            bylo přeneseno celkem.
-          </p>
+          <p className="mt-2 text-xs text-slate-400 sm:text-sm">{hotovoDoplneni}</p>
           <button
             type="button"
             onClick={novaHra}
@@ -363,10 +368,7 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
           </button>
         </div>
       ) : (
-        <p className="mt-4 text-center text-xs text-slate-500">
-          Tip: po přečtení teorie u veličin si jednotku odvoď z definice — pak tě cvičení
-          přestane strašit.
-        </p>
+        <p className="mt-4 text-center text-xs text-slate-500">Tip: {tipBehemHry}</p>
       )}
 
       {!hotovo ? (

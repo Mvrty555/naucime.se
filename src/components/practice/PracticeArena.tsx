@@ -4,12 +4,10 @@ import Link from "next/link";
 import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import { SpojovaniJednotek } from "@/components/cviceni/SpojovaniJednotek";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
+import { getSpojovaciKonfig } from "@/lib/practice/spojovaniRegistry";
 import { getTopicPracticePool } from "@/lib/practice/topicPools";
 import type { PracticeQuestion, QuestionGenerator } from "@/lib/practice/types";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
-
-/** Lekce „Měření a jednotky SI“ — ve výuce i procvičování stejné `id`. */
-const FYZIKA_MERENI_SI_LEKCE = "mereni-si";
 
 type Props = {
   predmet: PredmetVyuka;
@@ -263,8 +261,11 @@ export function PracticeArena({
     [predmet, stupe, rocnik, temaId],
   );
 
-  const spojovaniJednotek =
-    predmet === "fyzika" && temaId === FYZIKA_MERENI_SI_LEKCE && pool.length > 0;
+  const spojKonfig = useMemo(
+    () => getSpojovaciKonfig(predmet, temaId),
+    [predmet, temaId],
+  );
+  const spojovaniAktivni = Boolean(spojKonfig && pool.length > 0);
 
   if (temaId && pool.length === 0) {
     return (
@@ -294,7 +295,13 @@ export function PracticeArena({
         kompaktni ? "space-y-4" : "mx-auto max-w-2xl space-y-6"
       }
     >
-      {spojovaniJednotek ? <SpojovaniJednotek kompaktni={kompaktni} /> : null}
+      {spojovaniAktivni && spojKonfig ? (
+        <SpojovaniJednotek
+          key={`spoj-${sessionKey}`}
+          konfig={spojKonfig}
+          kompaktni={kompaktni}
+        />
+      ) : null}
       <PracticeArenaSession
         key={sessionKey}
         pool={pool}
