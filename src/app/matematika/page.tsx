@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { MatematikaRvpRocniky } from "@/components/matematika/MatematikaRvpRocniky";
 import { TeorieClankyList } from "@/components/teorie/TeorieClankyList";
 import { matematikaTeorieClanky } from "@/data/teorie/matematika-teorie";
 
 export const metadata: Metadata = {
   title: "Matematika",
   description:
-    "Matematika pro ZŠ a SŠ — teoretické lekce (poměry, procenta, lineární funkce), výuka po ročnících a procvičování.",
+    "Matematika pro ZŠ a SŠ — přehled podle RVP ZV po ročnících, teoretické lekce, výuka s úlohami a procvičování.",
 };
 
 export default function MatematikaPage() {
@@ -25,11 +26,13 @@ export default function MatematikaPage() {
         Matematika
       </h1>
       <p className="mt-4 text-lg leading-relaxed text-slate-400">
-        Sekce pro druhý stupeň základní školy a střední školy: čísla, algebra,
-        geometrie, funkce, pravděpodobnost a další témata podle osnov —
-        srozumitelná vysvětlení a interaktivní cvičení.
+        Čísla, algebra, geometrie, funkce a práce s daty — rozcestník podle ročníku
+        (návaznost na RVP ZV), delší teorie a interaktivní výuka s procvičením.
       </p>
-      <section className="mt-10">
+
+      <MatematikaRvpRocniky />
+
+      <section className="mt-14">
         <h2 className="text-lg font-semibold text-white">Teoretické lekce</h2>
         <p className="mt-2 text-sm leading-relaxed text-slate-400">
           Každá kapitola má perex, strukturované pojmy a vysvětlení „proč to tak je“.

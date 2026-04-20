@@ -34,7 +34,12 @@ export default function MatematikaZsPage() {
       </h1>
       <p className="mt-4 text-lg leading-relaxed text-slate-400">
         Krátké kapitoly, které můžeš číst po kouscích. Každá má příklady z vlastní
-        hlavy (žádné přepsané učebnice) a na závěr pár úloh na zkoušku pochopení.
+        hlavy (žádné přepsané učebnice) a na závěr pár úloh na zkoušku pochopení. Úplný
+        přehled podle ročníků a RVP je na stránce{" "}
+        <Link href="/matematika" className="font-medium text-cyan-400 hover:underline">
+          Matematika
+        </Link>
+        .
       </p>
       <p className="mt-6 flex flex-wrap gap-3">
         <Link
