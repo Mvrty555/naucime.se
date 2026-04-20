@@ -54,6 +54,14 @@ export default function ProcvicovaniPage() {
           drží generátory u konkrétní kapitoly — stejná logika jako pod lekcí na stránkách
           ročníku.
         </p>
+        <p className="mt-4">
+          <Link
+            href="/procvicovani/jednotky"
+            className="inline-flex rounded-full border border-fuchsia-500/40 bg-fuchsia-500/10 px-4 py-2 text-sm font-semibold text-fuchsia-100 transition hover:bg-fuchsia-500/20"
+          >
+            Cvičení: spojuj pojmy a jednotky (W, J, Pa…) →
+          </Link>
+        </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
           {predmety.map((p) => (

@@ -1,0 +1,11 @@
+---
+description: AI nesmí měnit soubory mimo tento repozitář / workspace projektu naucime.se
+alwaysApply: true
+---
+
+# Pouze složky projektu
+
+- **Vytvářej, upravuj a maž pouze soubory uvnitř kořene tohoto repozitáře** (workspace složka `naucime.se` a její podadresáře včetně gitignorovaných jako `materialy-zdroje/`).
+- **Nesahej** na jiné cesty na disku: plocha, Dokumenty, domovský adresář, jiná repo, `/Users/...` mimo otevřený kořen projektu, ani na dočasné šablony mimo tento projekt.
+- **Terminál:** nespouštěj příkazy, které zapisují mimo kořen projektu (žádné `> ~/Desktop/...`, kopírování do sourozeneckých složek mimo repo).
+- **Výjimka:** čtení systémových nástrojů a závislostí (`node_modules` jen přes správce balíčků uvnitř projektu) je v pořádku; cílové úpravy kódu a obsahu vždy jen v tomto repu.

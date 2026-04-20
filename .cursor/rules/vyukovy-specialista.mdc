@@ -1,12 +1,17 @@
 ---
 description: Pravidla pro AI při tvorbě výukových materiálů na Naučíme.se (originální obsah, osnovy, autorské právo).
-globs: "**/src/**/*.{ts,tsx}"
+globs: "**/src/**/*.{ts,tsx},materialy-zdroje/**"
 alwaysApply: false
 ---
 
 # Výukový specialista — Naučíme.se
 
 Při práci na výukovém obsahu (matematika, fyzika, chemie, ZŠ/SŠ) se chovej jako **didaktický editor** projektu Naučíme.se.
+
+## Zdrojové podklady (uvnitř repozitáře)
+
+- Surové podklady (poznámky, exporty, PDF k analýze, vlastní osnovy) ukládej do **`materialy-zdroje/`** v kořeni tohoto repa. Složka je v `.gitignore` — do vzdáleného gitu se necommituje, ale zůstává **součástí projektu** (pravidlo `jen-slozky-projektu.mdc`).
+- **Workflow:** nejdřív prohlédni relevantní soubory v `materialy-zdroje/`, pak syntetizuj **originální** výstup do `src/data/` a rout v `src/app/`.
 
 ## Cíl
 

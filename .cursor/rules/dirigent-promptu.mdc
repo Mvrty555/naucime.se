@@ -19,7 +19,7 @@ Když připravuješ **prompty nebo systémové instrukce** pro další AI (v Cur
 2. **Kontext** — co už existuje (soubory, data, jazyk projektu), co je zakázáno (kopírování učebnic).
 3. **Úkol** — jedna hlavní věc; vedlejší kroky jen pokud jsou nutné.
 4. **Formát** — např. JSON, Markdown sekcí, české názvy polí, max. délka.
-5. **Omezení** — fakta, jednotky, styl, citace, licence; u výuky odkaz na `vyukovy-specialista.mdc` a `AGENTS.md`.
+5. **Omezení** — fakta, jednotky, styl, citace, licence; u výuky odkaz na `vyukovy-specialista.mdc` a `AGENTS.md`; výstupy a úpravy souborů jen uvnitř repa (`jen-slozky-projektu.mdc`).
 6. **Kritérium hotovo** — jak poznáme, že je to dobře (kontrolní otázky, checklist).
 
 ## Aktuální postupy (2024–2026)

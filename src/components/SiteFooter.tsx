@@ -18,6 +18,12 @@ export function SiteFooter() {
             <Link href="/procvicovani" className="hover:text-cyan-300 hover:underline">
               Procvičování
             </Link>
+            <Link
+              href="/procvicovani/jednotky"
+              className="hover:text-cyan-300 hover:underline"
+            >
+              Jednotky (spojování)
+            </Link>
             <Link href="/vyuka" className="hover:text-cyan-300 hover:underline">
               Výuka (ročníky)
             </Link>
