@@ -2,10 +2,14 @@
 
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
+import { SpojovaniJednotek } from "@/components/cviceni/SpojovaniJednotek";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
 import { getTopicPracticePool } from "@/lib/practice/topicPools";
 import type { PracticeQuestion, QuestionGenerator } from "@/lib/practice/types";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
+
+/** Lekce „Měření a jednotky SI“ — ve výuce i procvičování stejné `id`. */
+const FYZIKA_MERENI_SI_LEKCE = "mereni-si";
 
 type Props = {
   predmet: PredmetVyuka;
@@ -204,6 +208,9 @@ export function PracticeArena({
     [predmet, stupe, rocnik, temaId],
   );
 
+  const spojovaniJednotek =
+    predmet === "fyzika" && temaId === FYZIKA_MERENI_SI_LEKCE && pool.length > 0;
+
   if (temaId && pool.length === 0) {
     return (
       <section
@@ -227,11 +234,18 @@ export function PracticeArena({
   }
 
   return (
-    <PracticeArenaSession
-      key={sessionKey}
-      pool={pool}
-      temaId={temaId}
-      kompaktni={kompaktni}
-    />
+    <div
+      className={
+        kompaktni ? "space-y-4" : "mx-auto max-w-2xl space-y-6"
+      }
+    >
+      {spojovaniJednotek ? <SpojovaniJednotek kompaktni={kompaktni} /> : null}
+      <PracticeArenaSession
+        key={sessionKey}
+        pool={pool}
+        temaId={temaId}
+        kompaktni={kompaktni}
+      />
+    </div>
   );
 }

@@ -19,10 +19,10 @@ export function SiteFooter() {
               Procvičování
             </Link>
             <Link
-              href="/procvicovani/jednotky"
+              href="/procvicovani?predmet=fyzika&stupe=zs&rocnik=5&tema=mereni-si"
               className="hover:text-cyan-300 hover:underline"
             >
-              Jednotky (spojování)
+              Jednotky SI (spojovačka)
             </Link>
             <Link href="/vyuka" className="hover:text-cyan-300 hover:underline">
               Výuka (ročníky)

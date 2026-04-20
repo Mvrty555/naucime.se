@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { Suspense, startTransition, useEffect, useMemo, useState } from "react";
 import { PracticeArena } from "@/components/practice/PracticeArena";
 import { getTemataNaRocniku, getTopicPracticePool } from "@/lib/practice/topicPools";
 import type { PredmetVyuka, StupeVyuka } from "@/types/vyuka";
@@ -12,7 +13,16 @@ const predmety: { id: PredmetVyuka; label: string }[] = [
   { id: "chemie", label: "Chemie" },
 ];
 
-export default function ProcvicovaniPage() {
+function isPredmetVyuka(v: string | null): v is PredmetVyuka {
+  return v === "matematika" || v === "fyzika" || v === "chemie";
+}
+
+function isStupeVyuka(v: string | null): v is StupeVyuka {
+  return v === "zs" || v === "ss";
+}
+
+function ProcvicovaniContent() {
+  const searchParams = useSearchParams();
   const [predmet, setPredmet] = useState<PredmetVyuka>("matematika");
   const [stupe, setStupe] = useState<StupeVyuka>("zs");
   const [rocnik, setRocnik] = useState(5);
@@ -34,6 +44,29 @@ export default function ProcvicovaniPage() {
     [predmet, temataVRocniku],
   );
 
+  useEffect(() => {
+    const p = searchParams.get("predmet");
+    const s = searchParams.get("stupe");
+    const r = searchParams.get("rocnik");
+    startTransition(() => {
+      if (isPredmetVyuka(p)) setPredmet(p);
+      if (isStupeVyuka(s)) setStupe(s);
+      if (r !== null && r !== "") {
+        const n = Number.parseInt(r, 10);
+        if (!Number.isNaN(n)) setRocnik(n);
+      }
+    });
+  }, [searchParams]);
+
+  useEffect(() => {
+    const temaParam = searchParams.get("tema");
+    if (!temaParam) return;
+    const ids = getTemataNaRocniku(predmet, stupe, rocnik).map((x) => x.id);
+    if (ids.includes(temaParam)) {
+      startTransition(() => setTemaId(temaParam));
+    }
+  }, [searchParams, predmet, stupe, rocnik]);
+
   return (
     <div className="min-h-[70vh] border-b border-slate-800/80">
       <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6 sm:py-16">
@@ -54,13 +87,10 @@ export default function ProcvicovaniPage() {
           drží generátory u konkrétní kapitoly — stejná logika jako pod lekcí na stránkách
           ročníku.
         </p>
-        <p className="mt-4">
-          <Link
-            href="/procvicovani/jednotky"
-            className="inline-flex rounded-full border border-fuchsia-500/40 bg-fuchsia-500/10 px-4 py-2 text-sm font-semibold text-fuchsia-100 transition hover:bg-fuchsia-500/20"
-          >
-            Cvičení: spojuj pojmy a jednotky (W, J, Pa…) →
-          </Link>
+        <p className="mt-3 text-xs text-slate-500">
+          U fyziky v 5. třídě zvol lekci{" "}
+          <strong className="text-slate-300">Měření a jednotky SI</strong> — zobrazí se
+          interaktivní spojovačka pojmů a symbolů jednotek (s čárami) i klasické příklady.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -192,5 +222,19 @@ export default function ProcvicovaniPage() {
         </p>
       </div>
     </div>
+  );
+}
+
+export default function ProcvicovaniPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-[50vh] border-b border-slate-800/80 px-4 py-16 text-center text-slate-400">
+          Načítání procvičování…
+        </div>
+      }
+    >
+      <ProcvicovaniContent />
+    </Suspense>
   );
 }
