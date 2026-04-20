@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useMemo, useState } from "react";
+import { startTransition, useCallback, useEffect, useMemo, useState } from "react";
 import { SpojovaniJednotek } from "@/components/cviceni/SpojovaniJednotek";
 import { getPracticePool, pickRandomQuestion } from "@/lib/practice/pools";
 import { getTopicPracticePool } from "@/lib/practice/topicPools";
@@ -28,14 +28,23 @@ type InnerProps = {
 };
 
 function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
-  const [otazka, setOtazka] = useState<PracticeQuestion>(() =>
-    pickRandomQuestion(pool),
+  /** První otázka až po mountu — `pickRandomQuestion` používá `Math.random` (jinak SSR ≠ klient). */
+  const [otazka, setOtazka] = useState<PracticeQuestion | null>(() =>
+    pool.length === 0 ? pickRandomQuestion(pool) : null,
   );
   const [vybrano, setVybrano] = useState<number | null>(null);
   const [hotovo, setHotovo] = useState(0);
   const [spravneCelkem, setSpravneCelkem] = useState(0);
   const [serie, setSerie] = useState(0);
   const [nejSerie, setNejSerie] = useState(0);
+
+  useEffect(() => {
+    if (pool.length === 0) return;
+    startTransition(() => {
+      setOtazka(pickRandomQuestion(pool));
+      setVybrano(null);
+    });
+  }, [pool]);
 
   const dalsi = useCallback(() => {
     if (pool.length === 0) return;
@@ -44,7 +53,7 @@ function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
   }, [pool]);
 
   const vyber = (i: number) => {
-    if (vybrano !== null) return;
+    if (otazka === null || vybrano !== null) return;
     setVybrano(i);
     setHotovo((h) => h + 1);
     if (i === otazka.correctIndex) {
@@ -59,16 +68,62 @@ function PracticeArenaSession({ pool, temaId, kompaktni }: InnerProps) {
     }
   };
 
-  const jeSpravne = vybrano !== null && vybrano === otazka.correctIndex;
+  const jeSpravne =
+    otazka !== null && vybrano !== null && vybrano === otazka.correctIndex;
+
+  const sectionClass =
+    kompaktni
+      ? "rounded-2xl border border-cyan-500/20 bg-slate-900/50 p-5 sm:p-6"
+      : "mx-auto max-w-2xl rounded-2xl border border-cyan-500/25 bg-gradient-to-br from-slate-900/90 to-slate-950/90 p-6 shadow-xl shadow-cyan-950/20 sm:p-8";
+
+  if (otazka === null) {
+    return (
+      <section className={sectionClass}>
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 className="text-lg font-semibold tracking-tight text-white sm:text-xl">
+              {temaId ? "Procvičení tématu" : "Procvičování"}
+            </h2>
+            <p className="mt-1 text-xs text-slate-400">
+              {temaId
+                ? "Příklady jen z okruhu zvolené lekce — náhodná čísla, stejná pravidla."
+                : "Nekonečná sada náhodných příkladů — pokaždé jiná čísla."}
+            </p>
+          </div>
+          <dl className="flex gap-4 text-right text-xs text-slate-400">
+            <div>
+              <dt className="uppercase tracking-wide">Hotovo</dt>
+              <dd className="font-mono text-base text-cyan-300">0</dd>
+            </div>
+            <div>
+              <dt className="uppercase tracking-wide">Správně</dt>
+              <dd className="font-mono text-base text-emerald-300">0</dd>
+            </div>
+            <div>
+              <dt className="uppercase tracking-wide">Serie</dt>
+              <dd className="font-mono text-base text-amber-300">0</dd>
+            </div>
+            <div>
+              <dt className="uppercase tracking-wide">Rekord</dt>
+              <dd className="font-mono text-base text-fuchsia-300">0</dd>
+            </div>
+          </dl>
+        </div>
+        <div className="mt-6 animate-pulse rounded-xl border border-slate-700/80 bg-slate-950/60 p-4 sm:p-5">
+          <div className="h-6 rounded-md bg-slate-700/60 sm:h-7" />
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+            {[0, 1, 2, 3].map((i) => (
+              <div key={i} className="h-12 rounded-xl bg-slate-800/70 sm:h-[3.25rem]" />
+            ))}
+          </div>
+          <p className="mt-3 text-xs text-slate-600">Načítám příklad…</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
-    <section
-      className={
-        kompaktni
-          ? "rounded-2xl border border-cyan-500/20 bg-slate-900/50 p-5 sm:p-6"
-          : "mx-auto max-w-2xl rounded-2xl border border-cyan-500/25 bg-gradient-to-br from-slate-900/90 to-slate-950/90 p-6 shadow-xl shadow-cyan-950/20 sm:p-8"
-      }
-    >
+    <section className={sectionClass}>
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-lg font-semibold tracking-tight text-white sm:text-xl">

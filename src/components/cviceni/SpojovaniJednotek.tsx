@@ -9,10 +9,22 @@ import {
 } from "react";
 import { jednotkySpojovaciPary } from "@/data/cviceni/jednotkySpojovani";
 
-function shuffle<T>(items: T[]): T[] {
+/** Deterministické míchání — stejný výsledek na serveru i v prohlížeči (bez hydration mismatch). */
+function mulberry32(seed: number) {
+  let s = seed >>> 0;
+  return function random() {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(s ^ (s >>> 15), s | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function shuffleSeeded<T>(items: T[], seed: number): T[] {
+  const rand = mulberry32(seed);
   const a = [...items];
   for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(rand() * (i + 1));
     [a[i], a[j]] = [a[j]!, a[i]!];
   }
   return a;
@@ -67,14 +79,22 @@ export function SpojovaniJednotek({ kompaktni }: Props) {
     () => new Map(jednotkySpojovaciPary.map((p) => [p.id, p] as const)),
     [],
   );
-  const pojmyRadka = useMemo(() => {
-    void hraSeed;
-    return shuffle(jednotkySpojovaciPary.map((p) => ({ id: p.id, text: p.pojem })));
-  }, [hraSeed]);
-  const jednotkyRadka = useMemo(() => {
-    void hraSeed;
-    return shuffle(jednotkySpojovaciPary.map((p) => ({ id: p.id, text: p.jednotkaZnak })));
-  }, [hraSeed]);
+  const pojmyRadka = useMemo(
+    () =>
+      shuffleSeeded(
+        jednotkySpojovaciPary.map((p) => ({ id: p.id, text: p.pojem })),
+        (hraSeed + 0x51ed) >>> 0,
+      ),
+    [hraSeed],
+  );
+  const jednotkyRadka = useMemo(
+    () =>
+      shuffleSeeded(
+        jednotkySpojovaciPary.map((p) => ({ id: p.id, text: p.jednotkaZnak })),
+        (hraSeed + 0xc001) >>> 0,
+      ),
+    [hraSeed],
+  );
 
   const [linkSvg, setLinkSvg] = useState<{
     hotove: string[];
